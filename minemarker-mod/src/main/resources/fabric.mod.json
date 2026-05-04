@@ -1,0 +1,26 @@
+{
+	"schemaVersion": 1,
+	"id": "minemarker",
+	"version": "${version}",
+	"name": "MineMarker",
+	"description": "A creator editing assistant for manual Minecraft timeline markers and timestamp exports.",
+	"authors": [
+		"MineMarker contributors"
+	],
+	"license": "MIT",
+	"environment": "client",
+	"entrypoints": {
+		"main": [
+			"com.minemarker.MineMarkerMod"
+		],
+		"client": [
+			"com.minemarker.client.MineMarkerClient"
+		]
+	},
+	"depends": {
+		"fabricloader": ">=0.19.2",
+		"minecraft": "~26.1.2",
+		"java": ">=25",
+		"fabric-api": "*"
+	}
+}

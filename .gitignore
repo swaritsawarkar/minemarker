@@ -1,0 +1,43 @@
+# Build outputs
+build/
+out/
+dist/
+*.class
+*.jar
+*.war
+
+# Gradle
+.gradle/
+!gradle/wrapper/gradle-wrapper.jar
+
+# Local Minecraft/Fabric run folders
+run/
+logs/
+crash-reports/
+saves/
+
+# Node / future timeline viewer
+node_modules/
+coverage/
+
+# IDE/editor
+.idea/
+.vscode/
+*.iml
+*.ipr
+*.iws
+
+# Environment and secrets
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.jks
+
+# OS/temp files
+.DS_Store
+Thumbs.db
+*.tmp
+*.temp
+*.log
