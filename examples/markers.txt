@@ -1,0 +1,9 @@
+MineMarker Session: hardcore-ep-3
+Started: 2026-05-04 15:30:00
+Stopped: 2026-05-04 16:25:12
+Duration: 00:55:12
+Video Offset: 0 seconds
+
+Markers:
+00:02:25 | diamond_ore | found diamonds near lava | minecraft:overworld | x=120 y=-54 z=302
+00:08:07 | funny_moment | creeper jumpscare | minecraft:overworld | x=98 y=64 z=241

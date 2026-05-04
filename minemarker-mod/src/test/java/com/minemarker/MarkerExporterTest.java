@@ -6,6 +6,7 @@ import org.junit.jupiter.api.io.TempDir;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -42,5 +43,41 @@ class MarkerExporterTest {
 	void timeFormatterUsesHourMinuteSecondShape() {
 		assertEquals("00:02:25", TimeUtil.formatTimestamp(145));
 		assertEquals("01:00:01", TimeUtil.formatTimestamp(3601));
+	}
+
+	@Test
+	void serviceDoesNotCrashWithoutActiveSession() {
+		MineMarkerService service = new MineMarkerService(new MarkerExporter(tempDir), new MineMarkerConfig());
+
+		assertTrue(service.addManualMarker("diamond", "note with spaces", PlayerSnapshot.empty()).isEmpty());
+		assertTrue(service.stopSession().isEmpty());
+		assertTrue(service.undoLatestMarker().isEmpty());
+	}
+
+	@Test
+	void sanitizesSessionNamesAndLabels() {
+		MarkerSession session = new MarkerSession("episode <> : one", "26.1.2", "1.0.0", null, null, 0.0D);
+		Marker marker = session.addManualMarker("diamond ore!!!", "note with spaces", PlayerSnapshot.empty());
+
+		assertEquals("episode-one", session.name());
+		assertEquals("diamond-ore", marker.label());
+		assertEquals("note with spaces", marker.note());
+	}
+
+	@Test
+	void exporterReportsPathFailures() throws Exception {
+		Path fileInsteadOfDirectory = tempDir.resolve("not-a-directory");
+		Files.writeString(fileInsteadOfDirectory, "blocking file", StandardCharsets.UTF_8);
+		MarkerSession session = new MarkerSession("bad path", "26.1.2", "1.0.0", null, null, 0.0D);
+		session.stop();
+
+		Optional<Exception> failure = Optional.empty();
+		try {
+			new MarkerExporter(fileInsteadOfDirectory).export(session, new MineMarkerConfig());
+		} catch (Exception exception) {
+			failure = Optional.of(exception);
+		}
+
+		assertTrue(failure.isPresent());
 	}
 }

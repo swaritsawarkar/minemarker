@@ -1,0 +1,3 @@
+id,type,timestamp_seconds,formatted_time,adjusted_timestamp_seconds,adjusted_formatted_time,label,note,created_at_local,x,y,z,dimension,biome,health,hunger
+1,manual,145,00:02:25,145,00:02:25,diamond_ore,found diamonds near lava,2026-05-04T15:32:25,120,-54,302,minecraft:overworld,,20,18
+2,manual,487,00:08:07,487,00:08:07,funny_moment,creeper jumpscare,2026-05-04T15:38:07,98,64,241,minecraft:overworld,,14,17
