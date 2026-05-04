@@ -6,6 +6,7 @@ import org.junit.jupiter.api.io.TempDir;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.Map;
 import java.util.Optional;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -37,6 +38,23 @@ class MarkerExporterTest {
 		String csv = Files.readString(result.sessionDirectory().resolve("markers.csv"), StandardCharsets.UTF_8);
 		assertTrue(csv.contains("id,type,timestamp_seconds"));
 		assertTrue(csv.contains("found diamonds near lava"));
+	}
+
+	@Test
+	void exportsAutomaticEventsInJsonAndText() throws Exception {
+		MarkerSession session = new MarkerSession("event session", "26.1.2", "2.0.0", "World", "Player", 1.0D);
+		session.addEvent("player_state", "low_health", "medium", "Low health warning", Map.of("health", "5.0"), new PlayerSnapshot(10, 64, 20, "minecraft:overworld", null, 5.0F, 14));
+		session.stop();
+
+		ExportResult result = new MarkerExporter(tempDir).export(session, new MineMarkerConfig());
+		String json = Files.readString(result.sessionDirectory().resolve("session.json"), StandardCharsets.UTF_8);
+		String text = Files.readString(result.sessionDirectory().resolve("markers.txt"), StandardCharsets.UTF_8);
+
+		assertTrue(json.contains("\"event_key\": \"low_health\""));
+		assertTrue(json.contains("\"importance\": \"medium\""));
+		assertTrue(json.contains("\"adjusted_timestamp_seconds\""));
+		assertTrue(text.contains("Events:"));
+		assertTrue(text.contains("low_health"));
 	}
 
 	@Test

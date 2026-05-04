@@ -16,6 +16,7 @@ public class MarkerSession {
 	private final LocalDateTime startedAtLocal;
 	private final long startedAtMillis;
 	private final List<Marker> markers = new ArrayList<>();
+	private final List<AutoEvent> events = new ArrayList<>();
 	private LocalDateTime stoppedAtLocal;
 	private Long stoppedAtMillis;
 	private double videoOffsetSeconds;
@@ -36,6 +37,12 @@ public class MarkerSession {
 		Marker marker = new Marker(markers.size() + 1, "manual", currentDurationSeconds(), videoOffsetSeconds, label, note, LocalDateTime.now(), snapshot);
 		markers.add(marker);
 		return marker;
+	}
+
+	public synchronized AutoEvent addEvent(String type, String eventKey, String importance, String label, java.util.Map<String, String> details, PlayerSnapshot snapshot) {
+		AutoEvent event = new AutoEvent(events.size() + 1, type, currentDurationSeconds(), videoOffsetSeconds, eventKey, importance, label, details, LocalDateTime.now(), snapshot);
+		events.add(event);
+		return event;
 	}
 
 	public synchronized Optional<Marker> undoLatestMarker() {
@@ -59,6 +66,10 @@ public class MarkerSession {
 
 	public synchronized List<Marker> markers() {
 		return Collections.unmodifiableList(new ArrayList<>(markers));
+	}
+
+	public synchronized List<AutoEvent> events() {
+		return Collections.unmodifiableList(new ArrayList<>(events));
 	}
 
 	public String id() {
@@ -103,5 +114,9 @@ public class MarkerSession {
 
 	public synchronized int markerCount() {
 		return markers.size();
+	}
+
+	public synchronized int eventCount() {
+		return events.size();
 	}
 }

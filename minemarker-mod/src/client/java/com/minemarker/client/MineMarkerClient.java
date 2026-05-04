@@ -20,6 +20,7 @@ public class MineMarkerClient implements ClientModInitializer {
 		service = new MineMarkerService(new MarkerExporter(), config);
 		MineMarkerCommands.register(service, config);
 		MineMarkerKeybinds.register(service, config);
+		MineMarkerEventDetector.register(service, config);
 		MineMarkerMod.LOGGER.info("MineMarker client initialized");
 	}
 

@@ -80,7 +80,12 @@ public class MarkerExporter {
 			markersJson.add(markerToJson(marker, config));
 		}
 		root.add("markers", markersJson);
-		root.add("events", new JsonArray());
+
+		JsonArray eventsJson = new JsonArray();
+		for (AutoEvent event : session.events()) {
+			eventsJson.add(eventToJson(event, config));
+		}
+		root.add("events", eventsJson);
 		return root;
 	}
 
@@ -114,6 +119,41 @@ public class MarkerExporter {
 		return json;
 	}
 
+	private JsonObject eventToJson(AutoEvent event, MineMarkerConfig config) {
+		JsonObject json = new JsonObject();
+		json.addProperty("id", event.id());
+		json.addProperty("type", event.type());
+		json.addProperty("timestamp_seconds", roundSeconds(event.timestampSeconds()));
+		json.addProperty("formatted_time", event.formattedTime());
+		json.addProperty("adjusted_timestamp_seconds", roundSeconds(event.adjustedTimestampSeconds()));
+		json.addProperty("adjusted_formatted_time", event.adjustedFormattedTime());
+		json.addProperty("event_key", event.eventKey());
+		json.addProperty("importance", event.importance());
+		json.addProperty("label", event.label());
+
+		JsonObject details = new JsonObject();
+		event.details().forEach(details::addProperty);
+		json.add("details", details);
+		addNullable(json, "created_at_local", config.includeSystemTimestamps() ? TimeUtil.formatLocalForJson(event.createdAtLocal()) : null);
+
+		PlayerSnapshot snapshot = event.snapshot();
+		if (config.includeCoordinates() && snapshot.x() != null && snapshot.y() != null && snapshot.z() != null) {
+			JsonObject position = new JsonObject();
+			position.addProperty("x", snapshot.x());
+			position.addProperty("y", snapshot.y());
+			position.addProperty("z", snapshot.z());
+			json.add("position", position);
+		} else {
+			json.add("position", null);
+		}
+
+		addNullable(json, "dimension", snapshot.dimension());
+		addNullable(json, "biome", snapshot.biome());
+		addNullable(json, "health", snapshot.health());
+		addNullable(json, "hunger", snapshot.hunger());
+		return json;
+	}
+
 	private String toText(MarkerSession session) {
 		StringBuilder builder = new StringBuilder();
 		builder.append("MineMarker Session: ").append(session.name()).append('\n');
@@ -130,6 +170,20 @@ public class MarkerExporter {
 					.append(marker.label())
 					.append(" | ")
 					.append(marker.note())
+					.append(" | ")
+					.append(snapshot.dimension() == null ? "unknown_dimension" : snapshot.dimension())
+					.append(" | ")
+					.append(positionText(snapshot))
+					.append('\n');
+		}
+		builder.append('\n').append("Events:\n");
+		for (AutoEvent event : session.events()) {
+			PlayerSnapshot snapshot = event.snapshot();
+			builder.append(event.adjustedFormattedTime())
+					.append(" | ")
+					.append(event.eventKey())
+					.append(" | ")
+					.append(event.label())
 					.append(" | ")
 					.append(snapshot.dimension() == null ? "unknown_dimension" : snapshot.dimension())
 					.append(" | ")
@@ -173,7 +227,7 @@ public class MarkerExporter {
 				markers.txt is a human-readable editing checklist.
 				markers.csv is spreadsheet-friendly and can be adapted for editor marker imports.
 
-				V1 contains manual markers only. Automatic Minecraft events are planned for V2.
+				Automatic events are included in session.json under the events array when enabled.
 				Video offset is applied to adjusted timestamps.
 				""";
 	}

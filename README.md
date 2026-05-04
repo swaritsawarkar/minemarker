@@ -1,12 +1,12 @@
 # MineMarker
 
-MineMarker is a Minecraft creator editing assistant. V1 is a Fabric client-side mod that lets creators start a recording session, add manual timestamp markers while playing, stop the session, and export editing notes as JSON, TXT, and CSV.
+MineMarker is a Minecraft creator editing assistant. The current local release is V2: a Fabric client-side mod that lets creators start a recording session, add manual timestamp markers, capture safe automatic events, stop the session, and export editing notes as JSON, TXT, and CSV.
 
 MineMarker is not a replay or cinematic camera mod. Replay Mod and Flashback already handle replay workflows well. MineMarker focuses on creator editing workflow: clean timestamps, marker notes, Minecraft context, and manual video offset support for recorded footage.
 
-## V1 Status
+## Current Status
 
-V1 is the manual marker release.
+V2 is the automatic event detection release.
 
 Implemented:
 - Fabric client mod for Minecraft Java `26.1.2`
@@ -17,9 +17,12 @@ Implemented:
 - Manual video offset
 - Simple config at `.minecraft/config/minemarker.json`
 - Local unit test coverage for exporter output
+- Automatic event detection for player death, dimension changes, and low health
+- `/minemarker events on|off|status`
 
-Not implemented in V1:
-- Automatic Minecraft event detection
+Not implemented yet:
+- Advancement detection
+- Valuable block mined detection
 - Timeline viewer
 - OBS WebSocket integration
 - AI or attention analysis
@@ -80,6 +83,9 @@ minemarker-mod/build/libs/
 /minemarker help
 /minemarker list
 /minemarker undo
+/minemarker events on
+/minemarker events off
+/minemarker events status
 ```
 
 Examples:
@@ -118,7 +124,14 @@ Config options:
   "defaultVideoOffsetSeconds": 0.0,
   "quickMarkerLabel": "quick_marker",
   "includeCoordinates": true,
-  "includeSystemTimestamps": true
+  "includeSystemTimestamps": true,
+  "autoEventsEnabled": true,
+  "detectDeaths": true,
+  "detectDimensionChange": true,
+  "detectAdvancements": false,
+  "detectValuableBlocks": false,
+  "detectLowHealth": true,
+  "lowHealthThreshold": 6.0
 }
 ```
 
@@ -137,7 +150,7 @@ Each exported session contains:
 - `markers.csv`: spreadsheet-friendly marker table
 - `README_session.txt`: explanation of the export folder
 
-JSON includes an empty `events` array in V1. Automatic events are planned for V2.
+JSON includes automatic events under the `events` array when event detection is enabled.
 
 ## OBS Workflow
 
@@ -164,9 +177,7 @@ Offset rule:
 
 ## Roadmap
 
-- V2: automatic Minecraft event detection
 - V3: local timeline viewer for video + MineMarker JSON
 - V4: better editor/export workflow
 - V5: OBS sync research and safer integration
 - V6: attention analysis only after the core workflow works
-

@@ -7,3 +7,7 @@ Video Offset: 0 seconds
 Markers:
 00:02:25 | diamond_ore | found diamonds near lava | minecraft:overworld | x=120 y=-54 z=302
 00:08:07 | funny_moment | creeper jumpscare | minecraft:overworld | x=98 y=64 z=241
+
+Events:
+00:10:21 | dimension_changed | Dimension changed | minecraft:the_nether | x=14 y=72 z=-8
+00:16:30 | low_health | Low health warning | minecraft:the_nether | x=33 y=65 z=-41

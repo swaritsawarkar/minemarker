@@ -49,7 +49,14 @@ public final class MineMarkerCommands {
 				.then(literal("list")
 						.executes(context -> list(context.getSource(), service)))
 				.then(literal("undo")
-						.executes(context -> undo(context.getSource(), service)))));
+						.executes(context -> undo(context.getSource(), service)))
+				.then(literal("events")
+						.then(literal("on")
+								.executes(context -> events(context.getSource(), service, true)))
+						.then(literal("off")
+								.executes(context -> events(context.getSource(), service, false)))
+						.then(literal("status")
+								.executes(context -> eventsStatus(context.getSource(), service, config))))));
 	}
 
 	private static int start(FabricClientCommandSource source, MineMarkerService service, String name) {
@@ -129,6 +136,7 @@ public final class MineMarkerCommands {
 				"/minemarker status",
 				"/minemarker export",
 				"/minemarker offset <seconds>",
+				"/minemarker events on|off|status",
 				"/minemarker list",
 				"/minemarker undo"
 		);
@@ -161,6 +169,22 @@ public final class MineMarkerCommands {
 					feedback(source, "No marker to undo in the current session.");
 					return 0;
 				});
+	}
+
+	private static int events(FabricClientCommandSource source, MineMarkerService service, boolean enabled) {
+		service.setAutoEventsEnabled(enabled);
+		feedback(source, "MineMarker automatic events " + (enabled ? "enabled." : "disabled."));
+		return 1;
+	}
+
+	private static int eventsStatus(FabricClientCommandSource source, MineMarkerService service, MineMarkerConfig config) {
+		feedback(source, "MineMarker automatic events: " + (service.autoEventsEnabled() ? "on" : "off"));
+		feedback(source, "Detect deaths: " + config.detectDeaths());
+		feedback(source, "Detect dimension changes: " + config.detectDimensionChange());
+		feedback(source, "Detect low health: " + config.detectLowHealth());
+		feedback(source, "Detect advancements: " + config.detectAdvancements() + " (not implemented in V2)");
+		feedback(source, "Detect valuable blocks: " + config.detectValuableBlocks() + " (not implemented in V2)");
+		return 1;
 	}
 
 	private static void exportSession(MineMarkerService service, MarkerSession session) {

@@ -1,5 +1,20 @@
 # Changelog
 
+## v2.0.0 - Automatic Event Detection
+
+Added:
+- Automatic event model and JSON export under `events`.
+- Client-side detection for player death, dimension changes, and low health.
+- `/minemarker events on`, `/minemarker events off`, and `/minemarker events status`.
+- Event detection config flags.
+- TXT export `Events:` section.
+- Unit test coverage for event export.
+
+Not added:
+- Advancement detection.
+- Valuable block mined detection.
+- Totem, boss kill, or item pickup detection.
+
 ## v1.0.0 - Manual Marker Mod
 
 Added:
@@ -17,4 +32,3 @@ Not added:
 - Timeline viewer.
 - OBS integration.
 - AI/attention analysis.
-

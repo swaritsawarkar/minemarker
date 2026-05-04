@@ -14,6 +14,7 @@ public class MineMarkerService {
 	private final ExecutorService exportExecutor;
 	private MarkerSession activeSession;
 	private MarkerSession lastSession;
+	private boolean autoEventsEnabled;
 
 	public MineMarkerService(MarkerExporter exporter, MineMarkerConfig config) {
 		this.exporter = exporter;
@@ -23,6 +24,7 @@ public class MineMarkerService {
 			thread.setDaemon(true);
 			return thread;
 		});
+		this.autoEventsEnabled = config.autoEventsEnabled();
 	}
 
 	public synchronized MarkerSession startSession(String requestedName, String minecraftVersion, String modVersion, String worldName, String playerName) {
@@ -47,6 +49,13 @@ public class MineMarkerService {
 			return Optional.empty();
 		}
 		return Optional.of(activeSession.addManualMarker(label, note, snapshot));
+	}
+
+	public synchronized Optional<AutoEvent> addAutoEvent(String type, String eventKey, String importance, String label, java.util.Map<String, String> details, PlayerSnapshot snapshot) {
+		if (activeSession == null || !autoEventsEnabled) {
+			return Optional.empty();
+		}
+		return Optional.of(activeSession.addEvent(type, eventKey, importance, label, details, snapshot));
 	}
 
 	public synchronized Optional<Marker> undoLatestMarker() {
@@ -77,6 +86,14 @@ public class MineMarkerService {
 
 	public synchronized List<Marker> currentMarkers() {
 		return activeSession == null ? List.of() : activeSession.markers();
+	}
+
+	public synchronized boolean autoEventsEnabled() {
+		return autoEventsEnabled;
+	}
+
+	public synchronized void setAutoEventsEnabled(boolean enabled) {
+		this.autoEventsEnabled = enabled;
 	}
 
 	public CompletableFuture<ExportResult> exportAsync(MarkerSession session) {

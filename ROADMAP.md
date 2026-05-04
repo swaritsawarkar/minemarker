@@ -13,14 +13,20 @@ Status: implemented locally.
 
 ## V2 - Automatic Minecraft Event Detection
 
-Planned:
+Status: implemented locally for stable client-side events.
 
 - Player death detection
 - Dimension change detection
-- Advancement detection if stable client-side
-- Valuable block mined detection if stable client-side
 - Low health warning
 - Event enable/disable commands and config
+
+Deferred:
+
+- Advancement detection
+- Valuable block mined detection
+- Totem pop detection
+- Boss kill detection
+- Rare item pickup detection
 
 ## V3 - Local Timeline Viewer
 
@@ -58,4 +64,3 @@ Only after V1-V3 are working:
 
 - Combine Minecraft events with video attention/drop signals
 - Suggest zooms, cuts, timelapses, or short-form candidates
-

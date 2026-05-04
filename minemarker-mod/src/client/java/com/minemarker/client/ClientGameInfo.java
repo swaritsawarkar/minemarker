@@ -39,10 +39,14 @@ public final class ClientGameInfo {
 		Integer x = config.includeCoordinates() ? position.getX() : null;
 		Integer y = config.includeCoordinates() ? position.getY() : null;
 		Integer z = config.includeCoordinates() ? position.getZ() : null;
-		String dimension = client.level.dimension().identifier().toString();
+		String dimension = currentDimension(client);
 		Float health = player.getHealth();
 		Integer hunger = player.getFoodData().getFoodLevel();
 
 		return new PlayerSnapshot(x, y, z, dimension, null, health, hunger);
+	}
+
+	public static String currentDimension(Minecraft client) {
+		return client.level == null ? null : client.level.dimension().identifier().toString();
 	}
 }

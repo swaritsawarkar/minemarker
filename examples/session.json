@@ -1,7 +1,7 @@
 {
   "project": "MineMarker",
   "schema_version": "1.0",
-  "mod_version": "1.0.0",
+  "mod_version": "2.0.0",
   "minecraft_version": "26.1.2",
   "session": {
     "id": "2026-05-04_15-30-00_hardcore-ep-3",
@@ -56,5 +56,56 @@
       "hunger": 17
     }
   ],
-  "events": []
+  "events": [
+    {
+      "id": 1,
+      "type": "dimension_change",
+      "timestamp_seconds": 621,
+      "formatted_time": "00:10:21",
+      "adjusted_timestamp_seconds": 621,
+      "adjusted_formatted_time": "00:10:21",
+      "event_key": "dimension_changed",
+      "importance": "high",
+      "label": "Dimension changed",
+      "details": {
+        "from": "minecraft:overworld",
+        "to": "minecraft:the_nether"
+      },
+      "created_at_local": "2026-05-04T15:40:21",
+      "position": {
+        "x": 14,
+        "y": 72,
+        "z": -8
+      },
+      "dimension": "minecraft:the_nether",
+      "biome": null,
+      "health": 20,
+      "hunger": 18
+    },
+    {
+      "id": 2,
+      "type": "player_state",
+      "timestamp_seconds": 990,
+      "formatted_time": "00:16:30",
+      "adjusted_timestamp_seconds": 990,
+      "adjusted_formatted_time": "00:16:30",
+      "event_key": "low_health",
+      "importance": "medium",
+      "label": "Low health warning",
+      "details": {
+        "health": "5.0",
+        "threshold": "6.0"
+      },
+      "created_at_local": "2026-05-04T15:46:30",
+      "position": {
+        "x": 33,
+        "y": 65,
+        "z": -41
+      },
+      "dimension": "minecraft:the_nether",
+      "biome": null,
+      "health": 5,
+      "hunger": 12
+    }
+  ]
 }

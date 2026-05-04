@@ -14,6 +14,7 @@
 - Confirmed unit tests pass.
 - Confirmed `fabric.mod.json` is processed during build.
 - Confirmed export unit test writes JSON, TXT, CSV, and session README.
+- Confirmed automatic event export test writes event JSON and TXT event rows.
 
 ## Not Performed
 
@@ -24,5 +25,4 @@
 
 ## Build Result
 
-`.\gradlew.bat clean build` succeeded after updating Fabric API usages for Minecraft/Fabric `26.1.2`.
-
+`.\gradlew.bat clean build` succeeded for V2 after adding automatic event detection.
