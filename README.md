@@ -1,12 +1,12 @@
 # MineMarker
 
-MineMarker is a Minecraft creator editing assistant. The current local release is V4.2: a Windows portable desktop app that can install the bundled Fabric mod, then load MineMarker exports with a local video.
+MineMarker is a Minecraft creator editing assistant. The current local release is V4.3: a Windows portable desktop app that can install the bundled Fabric mod, load the latest MineMarker session automatically, or load a custom session file.
 
 MineMarker is not a replay or cinematic camera mod. Replay Mod and Flashback already handle replay workflows well. MineMarker focuses on creator editing workflow: clean timestamps, marker notes, Minecraft context, and manual video offset support for recorded footage.
 
 ## Current Status
 
-V4.2 is the one-click mod installer and viewer redesign release.
+V4.3 is the latest-session workflow release.
 
 Implemented:
 - Fabric client mod for Minecraft Java `26.1.2`
@@ -32,6 +32,8 @@ Implemented:
 - Fixed desktop asset loading for Electron local file execution
 - One-click Fabric mod install from inside the `.exe`
 - Redesigned desktop UI with a setup-first creator workflow
+- `Load Last Session` button for the newest MineMarker export
+- `Load Custom Session` fallback for manually selected `session.json`
 
 Not implemented yet:
 - Advancement detection
@@ -94,7 +96,7 @@ The `.exe` bundles the MineMarker Fabric mod and can install it automatically. S
 3. Launch Minecraft with Fabric.
 4. Run `/minemarker start`, add markers/events, then `/minemarker stop`.
 5. MineMarker exports `session.json` under `.minecraft/minemarker/sessions/<session_id>/`.
-6. Load `session.json` and the matching OBS/video file in the `.exe`.
+6. Click `Load Last Session` in the `.exe`, or use `Load Custom Session` for a specific export.
 7. Use offset correction if the recording started before or after the MineMarker session.
 
 Run as a web app:

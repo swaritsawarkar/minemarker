@@ -14,6 +14,7 @@
 - The V4.1.1 portable `.exe` is Windows x64 only.
 - The V4.2 portable `.exe` can install the bundled Fabric mod into the default Minecraft directory, but it does not live-connect to Minecraft yet. It reads `session.json` files exported by the Fabric mod.
 - Custom Minecraft launcher directories may need manual jar placement because V4.2 targets the default `.minecraft/mods` folder.
+- V4.3 `Load Last Session` reads from the default `.minecraft/minemarker/sessions` folder. Use `Load Custom Session` for custom launcher/export paths.
 - Timeline viewer browser QA used installed Chrome through a Playwright fallback because the Browser plugin tool was not exposed.
 - `npm install` reports moderate advisories in the Vite/dev dependency tree; no force upgrade was applied.
 - Local PATH had Java 8 only; building requires Java 25.

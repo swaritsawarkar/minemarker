@@ -67,3 +67,5 @@ V4.2 final validation passed:
 - `npm run desktop:build`
 - packaged Electron installer smoke test with a temporary `%APPDATA%`
 - verified installed jar hash: `BB1E23AB599C0B6A7E8234C220A2853E5A7299AA6A07C13A6CDFCB34B9B44634`
+
+V4.3 added desktop latest-session discovery for `.minecraft/minemarker/sessions/*/session.json`.

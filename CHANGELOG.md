@@ -1,5 +1,18 @@
 # Changelog
 
+## v4.3.0 - Latest Session Loader
+
+Added:
+- `Load Last Session` button in the desktop app.
+- Automatic discovery of the newest `.minecraft/minemarker/sessions/*/session.json`.
+- `Open sessions folder` action.
+- `Load Custom Session` label for manual JSON selection.
+
+Known limits:
+- Latest-session loading uses the default Minecraft directory.
+- Custom launcher/export directories still require manual `Load Custom Session`.
+- Sync remains file-based.
+
 ## v4.2.0 - One-Click Mod Installer and UI Redesign
 
 Added:

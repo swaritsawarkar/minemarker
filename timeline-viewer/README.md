@@ -1,6 +1,6 @@
 # MineMarker Timeline Viewer
 
-The V4.2 timeline viewer is a local React + Vite app packaged as a Windows portable Electron `.exe`. The desktop app bundles the MineMarker Fabric mod and can install it into the default Minecraft mods folder with one button. It loads a MineMarker `session.json` file and a local video file, displays manual markers and automatic events on a timeline, lets the user jump video playback by clicking timeline items, applies a manual offset, filters items, exports editing notes, and generates rule-based creator suggestions.
+The V4.3 timeline viewer is a local React + Vite app packaged as a Windows portable Electron `.exe`. The desktop app bundles the MineMarker Fabric mod, can install it into the default Minecraft mods folder with one button, and can load the newest MineMarker session export automatically. It also supports manually loading a custom `session.json`.
 
 No backend, cloud account, login, telemetry, or upload service is required.
 
@@ -63,7 +63,7 @@ npm test
 2. Click `Install Minecraft Mod`.
 3. Launch Minecraft with Fabric.
 4. In Minecraft, run `/minemarker start`, add markers/events, then `/minemarker stop`.
-5. Click `Load JSON` and select the exported MineMarker `session.json`.
+5. Click `Load Last Session` to load the newest exported MineMarker `session.json`, or use `Load Custom Session`.
 6. Click `Load Video` and select the matching recording.
 7. Adjust `Offset` if the recording started before or after the MineMarker session.
 8. Click timeline ticks or list rows to jump the video.
@@ -73,7 +73,7 @@ npm test
 
 ## How Minecraft Sync Works
 
-V4.2 does not live-connect the desktop app to Minecraft. The desktop app installs the bundled Fabric mod. The Fabric mod records the session and exports files. The desktop app reads those files and syncs them with a local video using timestamps and manual offset correction.
+V4.3 does not live-connect the desktop app to Minecraft. The desktop app installs the bundled Fabric mod. The Fabric mod records the session and exports files. The desktop app can find the newest `session.json` under `.minecraft/minemarker/sessions/`, or the user can load a custom session.
 
 ## V4 Exports
 
