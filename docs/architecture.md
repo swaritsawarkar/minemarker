@@ -21,7 +21,7 @@ Main pieces:
 
 `session.json` is the source of truth. TXT and CSV are convenience exports for humans and spreadsheets.
 
-V1 writes:
+The JSON export writes:
 
 - `project`
 - `schema_version`
@@ -31,7 +31,7 @@ V1 writes:
 - `markers`
 - `events`
 
-The `events` array exists but is empty until V2.
+V2 and later can populate the `events` array.
 
 ## Threading
 
@@ -47,4 +47,16 @@ V2 intentionally implements only stable client-side polling:
 
 Advancements and mined valuable blocks are deferred until they can be validated without brittle hooks.
 
-V3 should read exported JSON from disk and remain local-only. It should not require an account, cloud service, or backend unless video handling truly requires one.
+V3 reads exported JSON from disk and remains local-only. It does not require an account, cloud service, or backend.
+
+## V3 Timeline Viewer
+
+The timeline viewer is a React + Vite static app.
+
+Main pieces:
+
+- `App.tsx`: shell, file loading, video playback, timeline selection, filters, exports.
+- `src/lib/timeline.ts`: timestamp formatting, schema validation, timeline item normalization, notes/CSV export helpers.
+- `src/types.ts`: MineMarker JSON types.
+
+The viewer uses browser file inputs. It does not upload data or scan the user's disk.

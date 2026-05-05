@@ -1,0 +1,89 @@
+{
+  "project": "MineMarker",
+  "schema_version": "1.0",
+  "mod_version": "3.0.0",
+  "minecraft_version": "26.1.2",
+  "session": {
+    "id": "2026-05-04_15-30-00_hardcore-ep-3",
+    "name": "hardcore-ep-3",
+    "world": "Hardcore World",
+    "player": "PlayerName",
+    "started_at_local": "2026-05-04T15:30:00",
+    "stopped_at_local": "2026-05-04T16:25:12",
+    "duration_seconds": 3312,
+    "video_offset_seconds": 0,
+    "marker_count": 2
+  },
+  "markers": [
+    {
+      "id": 1,
+      "type": "manual",
+      "timestamp_seconds": 145,
+      "formatted_time": "00:02:25",
+      "adjusted_timestamp_seconds": 145,
+      "adjusted_formatted_time": "00:02:25",
+      "label": "diamond_ore",
+      "note": "found diamonds near lava",
+      "created_at_local": "2026-05-04T15:32:25",
+      "position": { "x": 120, "y": -54, "z": 302 },
+      "dimension": "minecraft:overworld",
+      "biome": null,
+      "health": 20,
+      "hunger": 18
+    },
+    {
+      "id": 2,
+      "type": "manual",
+      "timestamp_seconds": 487,
+      "formatted_time": "00:08:07",
+      "adjusted_timestamp_seconds": 487,
+      "adjusted_formatted_time": "00:08:07",
+      "label": "funny_moment",
+      "note": "creeper jumpscare",
+      "created_at_local": "2026-05-04T15:38:07",
+      "position": { "x": 98, "y": 64, "z": 241 },
+      "dimension": "minecraft:overworld",
+      "biome": null,
+      "health": 14,
+      "hunger": 17
+    }
+  ],
+  "events": [
+    {
+      "id": 1,
+      "type": "dimension_change",
+      "timestamp_seconds": 621,
+      "formatted_time": "00:10:21",
+      "adjusted_timestamp_seconds": 621,
+      "adjusted_formatted_time": "00:10:21",
+      "event_key": "dimension_changed",
+      "importance": "high",
+      "label": "Dimension changed",
+      "details": { "from": "minecraft:overworld", "to": "minecraft:the_nether" },
+      "created_at_local": "2026-05-04T15:40:21",
+      "position": { "x": 14, "y": 72, "z": -8 },
+      "dimension": "minecraft:the_nether",
+      "biome": null,
+      "health": 20,
+      "hunger": 18
+    },
+    {
+      "id": 2,
+      "type": "player_state",
+      "timestamp_seconds": 990,
+      "formatted_time": "00:16:30",
+      "adjusted_timestamp_seconds": 990,
+      "adjusted_formatted_time": "00:16:30",
+      "event_key": "low_health",
+      "importance": "medium",
+      "label": "Low health warning",
+      "details": { "health": "5.0", "threshold": "6.0" },
+      "created_at_local": "2026-05-04T15:46:30",
+      "position": { "x": 33, "y": 65, "z": -41 },
+      "dimension": "minecraft:the_nether",
+      "biome": null,
+      "health": 5,
+      "hunger": 12
+    }
+  ]
+}

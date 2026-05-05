@@ -30,15 +30,15 @@ Deferred:
 
 ## V3 - Local Timeline Viewer
 
-Planned:
+Status: implemented locally.
 
-- Local-only viewer
+- Local-only React/Vite viewer
 - Load `session.json`
 - Load video file
 - Show markers/events on a timeline
-- Click marker to jump video
+- Click marker/event to jump video
 - Offset adjustment
-- Export editing notes
+- Export editing notes and marker CSV
 
 ## V4 - Creator Export Workflow
 

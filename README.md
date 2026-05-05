@@ -1,12 +1,12 @@
 # MineMarker
 
-MineMarker is a Minecraft creator editing assistant. The current local release is V2: a Fabric client-side mod that lets creators start a recording session, add manual timestamp markers, capture safe automatic events, stop the session, and export editing notes as JSON, TXT, and CSV.
+MineMarker is a Minecraft creator editing assistant. The current local release is V3: a Fabric client-side mod plus a local timeline viewer that reads MineMarker exports and syncs them with a local video file.
 
 MineMarker is not a replay or cinematic camera mod. Replay Mod and Flashback already handle replay workflows well. MineMarker focuses on creator editing workflow: clean timestamps, marker notes, Minecraft context, and manual video offset support for recorded footage.
 
 ## Current Status
 
-V2 is the automatic event detection release.
+V3 is the local timeline viewer release.
 
 Implemented:
 - Fabric client mod for Minecraft Java `26.1.2`
@@ -19,11 +19,16 @@ Implemented:
 - Local unit test coverage for exporter output
 - Automatic event detection for player death, dimension changes, and low health
 - `/minemarker events on|off|status`
+- React/Vite local timeline viewer
+- Load MineMarker `session.json`
+- Load a local video file
+- Click markers/events to jump video playback
+- Filter markers/events
+- Export `editing_notes.txt` and `editing_markers.csv`
 
 Not implemented yet:
 - Advancement detection
 - Valuable block mined detection
-- Timeline viewer
 - OBS WebSocket integration
 - AI or attention analysis
 - Editor-native marker import formats
@@ -69,6 +74,26 @@ Successful build output creates the mod jar under:
 
 ```text
 minemarker-mod/build/libs/
+```
+
+## Timeline Viewer
+
+```powershell
+cd timeline-viewer
+npm install
+npm run dev
+```
+
+Open:
+
+```text
+http://127.0.0.1:5173/
+```
+
+Build the viewer:
+
+```powershell
+npm run build
 ```
 
 ## Commands
@@ -177,7 +202,6 @@ Offset rule:
 
 ## Roadmap
 
-- V3: local timeline viewer for video + MineMarker JSON
 - V4: better editor/export workflow
 - V5: OBS sync research and safer integration
 - V6: attention analysis only after the core workflow works

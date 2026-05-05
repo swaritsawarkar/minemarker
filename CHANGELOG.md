@@ -1,5 +1,24 @@
 # Changelog
 
+## v3.0.0 - Local Timeline Viewer
+
+Added:
+- React + Vite local timeline viewer.
+- Local `session.json` loading.
+- Local video file loading.
+- Timeline ticks for markers and events.
+- Click marker/event to jump video playback.
+- Offset input for manual video sync.
+- Filters for all, markers, events, and high-priority moments.
+- Export `editing_notes.txt`.
+- Export `editing_markers.csv`.
+- Viewer unit tests and production build.
+
+Not added:
+- Portable desktop executable.
+- Premiere/DaVinci marker templates.
+- Project save/load.
+
 ## v2.0.0 - Automatic Event Detection
 
 Added:
