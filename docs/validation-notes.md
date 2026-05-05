@@ -69,3 +69,11 @@ V4.2 final validation passed:
 - verified installed jar hash: `BB1E23AB599C0B6A7E8234C220A2853E5A7299AA6A07C13A6CDFCB34B9B44634`
 
 V4.3 added desktop latest-session discovery for `.minecraft/minemarker/sessions/*/session.json`.
+
+V4.3 final validation passed:
+
+- `.\gradlew.bat clean build`
+- `npm test`
+- `npm run desktop:build`
+- packaged Electron latest-session smoke test with fake old/new MineMarker session exports
+- verified `Load Last Session` loaded `new-session` and did not load `old-session`
