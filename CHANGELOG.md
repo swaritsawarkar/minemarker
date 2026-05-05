@@ -1,5 +1,14 @@
 # Changelog
 
+## v4.1.1 - Portable App Hotfix
+
+Fixed:
+- Desktop `.exe` asset loading by using relative Vite asset paths for Electron local file execution.
+
+Added:
+- In-app Minecraft sync instructions explaining that the viewer reads mod exports.
+- Release notes clarifying that users need both the Fabric mod jar and the timeline viewer app.
+
 ## v4.1.0 - Portable Desktop App
 
 Added:

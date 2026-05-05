@@ -1,12 +1,12 @@
 # MineMarker
 
-MineMarker is a Minecraft creator editing assistant. The current local release is V4.1: a Fabric client-side mod plus a local timeline viewer with a Windows portable desktop `.exe`.
+MineMarker is a Minecraft creator editing assistant. The current local release is V4.1.1: a Fabric client-side mod plus a fixed Windows portable timeline viewer `.exe`.
 
 MineMarker is not a replay or cinematic camera mod. Replay Mod and Flashback already handle replay workflows well. MineMarker focuses on creator editing workflow: clean timestamps, marker notes, Minecraft context, and manual video offset support for recorded footage.
 
 ## Current Status
 
-V4.1 is the portable desktop app packaging release.
+V4.1.1 is the portable desktop app hotfix release.
 
 Implemented:
 - Fabric client mod for Minecraft Java `26.1.2`
@@ -29,6 +29,7 @@ Implemented:
 - Export `editing_suggestions.txt`
 - Export `editor_review.csv` for spreadsheet/editor review
 - Windows portable `.exe` build for the timeline viewer
+- Fixed desktop asset loading for Electron local file execution
 
 Not implemented yet:
 - Advancement detection
@@ -81,6 +82,17 @@ minemarker-mod/build/libs/
 ```
 
 ## Timeline Viewer
+
+Important sync note:
+
+The `.exe` does not connect directly to Minecraft in V4.1.1. Sync is file-based:
+
+1. Install the MineMarker Fabric mod jar in `.minecraft/mods/`.
+2. In Minecraft, run `/minemarker start`, add markers/events, then `/minemarker stop`.
+3. MineMarker exports `session.json` under `.minecraft/minemarker/sessions/<session_id>/`.
+4. Open the timeline viewer `.exe`.
+5. Load `session.json` and the matching OBS/video file.
+6. Use offset correction if the recording started before or after the MineMarker session.
 
 Run as a web app:
 

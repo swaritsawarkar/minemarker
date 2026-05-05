@@ -226,6 +226,19 @@ export function App() {
           {error && <p className="error">{error}</p>}
         </section>
 
+        <section className="panel stack sync-panel">
+          <div className="section-heading">
+            <h2>Minecraft Sync</h2>
+            <Gauge size={16} />
+          </div>
+          <ol className="sync-steps">
+            <li>Install the Fabric mod jar in `.minecraft/mods`.</li>
+            <li>Run `/minemarker start`, add markers, then `/minemarker stop`.</li>
+            <li>Load the exported `session.json` and your OBS video here.</li>
+          </ol>
+          <p className="hint">V4.1.1 is file-based sync, not live Minecraft connection.</p>
+        </section>
+
         <section className="panel stack">
           <div className="section-heading">
             <h2>Offset</h2>

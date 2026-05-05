@@ -10,9 +10,9 @@
 - OBS sync is manual. Use `/minemarker offset <seconds>` or adjust timestamps manually while editing.
 - V4 `editor_review.csv` is a spreadsheet-friendly review export, not a verified direct Premiere, DaVinci Resolve, or Final Cut marker import.
 - V4 suggestions are rule-based and depend on marker/event labels, event keys, importance, and quiet gaps. They are not AI analysis.
-- The V4.1 portable `.exe` is unsigned, so Windows may show an unknown publisher warning.
-- The V4.1 portable `.exe` is Windows x64 only.
+- The V4.1.1 portable `.exe` is unsigned, so Windows may show an unknown publisher warning.
+- The V4.1.1 portable `.exe` is Windows x64 only.
+- The timeline viewer `.exe` does not live-connect to Minecraft yet. It reads `session.json` files exported by the Fabric mod.
 - Timeline viewer browser QA used installed Chrome through a Playwright fallback because the Browser plugin tool was not exposed.
 - `npm install` reports moderate advisories in the Vite/dev dependency tree; no force upgrade was applied.
 - Local PATH had Java 8 only; building requires Java 25.
-- GitHub push is not configured until a remote `origin` URL is provided.

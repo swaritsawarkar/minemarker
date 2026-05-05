@@ -155,6 +155,20 @@ button {
   color: #ff8c8c;
 }
 
+.sync-steps {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding-left: 18px;
+  color: #d7ede4;
+  font-size: 0.86rem;
+}
+
+.sync-steps li::marker {
+  color: #36d399;
+  font-weight: 800;
+}
+
 .offset-control {
   display: grid;
   grid-template-columns: 1fr 105px;

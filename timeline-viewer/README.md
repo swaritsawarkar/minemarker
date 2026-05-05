@@ -1,6 +1,6 @@
 # MineMarker Timeline Viewer
 
-The V4.1 timeline viewer is a local React + Vite app packaged as both a web app and a Windows portable Electron `.exe`. It loads a MineMarker `session.json` file and a local video file, displays manual markers and automatic events on a timeline, lets the user jump video playback by clicking timeline items, applies a manual offset, filters items, exports editing notes, and generates rule-based creator suggestions.
+The V4.1.1 timeline viewer is a local React + Vite app packaged as both a web app and a Windows portable Electron `.exe`. It loads a MineMarker `session.json` file and a local video file, displays manual markers and automatic events on a timeline, lets the user jump video playback by clicking timeline items, applies a manual offset, filters items, exports editing notes, and generates rule-based creator suggestions.
 
 No backend, cloud account, login, telemetry, or upload service is required.
 
@@ -59,15 +59,20 @@ npm test
 
 ## Workflow
 
-1. Click `Load JSON`.
-2. Select a MineMarker `session.json`.
-3. Click `Load Video`.
-4. Select the matching recording.
-5. Adjust `Offset` if the recording started before or after the MineMarker session.
-6. Click timeline ticks or list rows to jump the video.
-7. Filter by markers, events, or high-priority moments.
-8. Review rule-based suggestions for clip candidates, timelapse candidates, and quiet sections.
-9. Export `editing_notes.txt`, `editing_markers.csv`, `editing_suggestions.txt`, or `editor_review.csv`.
+1. Install the MineMarker Fabric mod jar in `.minecraft/mods/`.
+2. In Minecraft, run `/minemarker start`, add markers/events, then `/minemarker stop`.
+3. Open the timeline viewer web app or `.exe`.
+4. Click `Load JSON` and select the exported MineMarker `session.json`.
+5. Click `Load Video` and select the matching recording.
+6. Adjust `Offset` if the recording started before or after the MineMarker session.
+7. Click timeline ticks or list rows to jump the video.
+8. Filter by markers, events, or high-priority moments.
+9. Review rule-based suggestions for clip candidates, timelapse candidates, and quiet sections.
+10. Export `editing_notes.txt`, `editing_markers.csv`, `editing_suggestions.txt`, or `editor_review.csv`.
+
+## How Minecraft Sync Works
+
+V4.1.1 does not live-connect the desktop app to Minecraft. The Fabric mod records the session and exports files. The desktop app reads those files and syncs them with a local video using timestamps and manual offset correction.
 
 ## V4 Exports
 

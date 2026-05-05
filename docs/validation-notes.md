@@ -28,6 +28,7 @@
 - Re-ran `.\gradlew.bat clean build` for the Fabric mod after V4 viewer changes.
 - Built V4.1 Windows portable `.exe` with Electron and `electron-builder`.
 - Launched the V4.1 portable `.exe` and confirmed it spawned 4 Electron processes with a MineMarker window title after 12 seconds.
+- Fixed V4.1.1 Electron asset loading by changing Vite to relative asset paths.
 
 ## Not Performed
 
@@ -48,3 +49,9 @@
 `.\gradlew.bat clean build` still succeeded for the Fabric mod after V4 documentation/viewer changes.
 
 `npm run desktop:build` produced `MineMarker-Timeline-Viewer-4.1.0-Portable-x64.exe`.
+
+`npm run desktop:build` produced `MineMarker-Timeline-Viewer-4.1.1-Portable-x64.exe` after the Electron asset-path fix.
+
+Electron render smoke test passed for V4.1.1 by confirming visible `MineMarker`, `Minecraft Sync`, and `Load JSON` text in the app window.
+
+`.\gradlew.bat clean build` succeeded again before the V4.1.1 release assets were prepared.
