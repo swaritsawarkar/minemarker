@@ -77,3 +77,12 @@ V4.3 final validation passed:
 - `npm run desktop:build`
 - packaged Electron latest-session smoke test with fake old/new MineMarker session exports
 - verified `Load Last Session` loaded `new-session` and did not load `old-session`
+
+V4.3 retest on 2026-05-05 passed:
+
+- Initial default-shell Gradle run failed because the machine PATH points to Java 8.
+- Re-ran `.\gradlew.bat clean build` with `JAVA_HOME=C:\Users\swaritlol\.cache\minemarker-tools\jdk-25`; build passed.
+- Re-ran `npm test`; 6 Vitest tests passed.
+- Re-ran `npm run desktop:build`; `MineMarker-Timeline-Viewer-4.3.0-Portable-x64.exe` was rebuilt successfully.
+- Re-ran packaged Electron latest-session smoke test with fake old/new MineMarker session exports; the app loaded `LATEST-SESSION` and did not show `OLDER_MARKER`.
+- Re-ran packaged Electron mod-installer smoke test with temporary `%APPDATA%`; installed jar hash matched the bundled jar hash `bb1e23ab599c0b6a7e8234c220a2853e5a7299aa6a07c13a6cdfcb34b9b44634`.
