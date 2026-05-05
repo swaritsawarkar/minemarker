@@ -289,32 +289,13 @@ export function App() {
           <div className="brand-mark">M</div>
           <div>
             <h1>MineMarker</h1>
-            <p>Timeline Viewer</p>
+            <p>Creator Timeline OS</p>
           </div>
         </div>
 
-        <section className="panel stack">
-          <h2>Session Files</h2>
-          <label className="file-control">
-            <FileJson size={18} />
-            <span>Load JSON</span>
-            <input type="file" accept="application/json,.json" onChange={handleJson} />
-          </label>
-          <label className="file-control">
-            <Video size={18} />
-            <span>Load Video</span>
-            <input type="file" accept="video/*" onChange={handleVideo} />
-          </label>
-          <div className="file-meta">
-            <strong>{jsonName}</strong>
-            <span>{videoName}</span>
-          </div>
-          {error && <p className="error">{error}</p>}
-        </section>
-
-        <section className="panel stack sync-panel">
+        <section className="panel stack sync-panel setup-panel">
           <div className="section-heading">
-            <h2>Minecraft Sync</h2>
+            <h2>Setup</h2>
             {installState.status?.installed ? <CheckCircle2 size={16} /> : <HardDriveDownload size={16} />}
           </div>
           <button className="primary-install" disabled={installState.loading || !window.mineMarkerDesktop} onClick={installMod}>
@@ -336,7 +317,25 @@ export function App() {
             <li>Run `/minemarker start`, add markers, then `/minemarker stop`.</li>
             <li>Load the exported `session.json` and your OBS video here.</li>
           </ol>
-          <p className="hint">V4.2 is one-click mod install plus file-based video sync.</p>
+        </section>
+
+        <section className="panel stack">
+          <h2>Session Files</h2>
+          <label className="file-control">
+            <FileJson size={18} />
+            <span>Load JSON</span>
+            <input type="file" accept="application/json,.json" onChange={handleJson} />
+          </label>
+          <label className="file-control">
+            <Video size={18} />
+            <span>Load Video</span>
+            <input type="file" accept="video/*" onChange={handleVideo} />
+          </label>
+          <div className="file-meta">
+            <strong>{jsonName}</strong>
+            <span>{videoName}</span>
+          </div>
+          {error && <p className="error">{error}</p>}
         </section>
 
         <section className="panel stack">
