@@ -80,3 +80,19 @@ export interface TimelineItem {
   position?: Position | null;
   source: MineMarkerMarker | MineMarkerEvent;
 }
+
+export type SuggestionKind = 'clip_candidate' | 'timelapse_candidate' | 'boring_gap';
+export type SuggestionPriority = 'high' | 'medium' | 'low';
+
+export interface CreatorSuggestion {
+  key: string;
+  kind: SuggestionKind;
+  title: string;
+  reason: string;
+  priority: SuggestionPriority;
+  startSeconds: number;
+  endSeconds?: number;
+  formattedStart: string;
+  formattedEnd?: string;
+  sourceKeys: string[];
+}

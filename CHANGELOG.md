@@ -1,5 +1,22 @@
 # Changelog
 
+## v4.0.0 - Creator Export Workflow
+
+Added:
+- Rule-based creator suggestions in the timeline viewer.
+- Clip candidate suggestions for deaths, diamonds, ancient debris, dimension changes, low health, and similar high-impact moments.
+- Timelapse candidate suggestions for build/mining style manual markers.
+- Quiet-section suggestions for long gaps without MineMarker markers or events.
+- Export `editing_suggestions.txt`.
+- Export `editor_review.csv` for spreadsheet-based edit review.
+- Example V4 suggestion and review exports.
+
+Not added:
+- AI attention analysis.
+- Verified direct Premiere, DaVinci Resolve, or Final Cut marker import.
+- OBS sync automation.
+- Packaged portable `.exe`.
+
 ## v3.0.0 - Local Timeline Viewer
 
 Added:

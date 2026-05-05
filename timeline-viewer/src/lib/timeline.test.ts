@@ -1,5 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { exportEditingNotes, exportMarkerCsv, formatTime, normalizeSession, toTimelineItems } from './timeline';
+import { buildCreatorSuggestions, exportReviewCsv, exportSuggestionNotes } from './suggestions';
 import type { MineMarkerExport } from '../types';
 
 const sample: MineMarkerExport = {
@@ -64,5 +65,19 @@ describe('timeline helpers', () => {
     const items = toTimelineItems(sample, 2);
     expect(exportEditingNotes(sample, items)).toContain('diamond_ore');
     expect(exportMarkerCsv(items)).toContain('note with spaces');
+  });
+
+  it('creates rule-based creator suggestions', () => {
+    const items = toTimelineItems(sample, 2);
+    const suggestions = buildCreatorSuggestions(items, 1200);
+    expect(suggestions.some((suggestion) => suggestion.kind === 'clip_candidate' && suggestion.priority === 'high')).toBe(true);
+    expect(suggestions.some((suggestion) => suggestion.kind === 'boring_gap')).toBe(true);
+  });
+
+  it('exports suggestion notes and review csv', () => {
+    const items = toTimelineItems(sample, 2);
+    const suggestions = buildCreatorSuggestions(items, 1200);
+    expect(exportSuggestionNotes(sample, suggestions)).toContain('rule-based');
+    expect(exportReviewCsv(items, suggestions)).toContain('clip_candidate');
   });
 });

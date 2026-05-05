@@ -42,13 +42,20 @@ Status: implemented locally.
 
 ## V4 - Creator Export Workflow
 
-Possible:
+Status: implemented locally.
 
-- Better editing software CSV templates
-- Marker categories/colors
 - Rule-based clip suggestions
-- Rule-based boring section detection
-- Shorts and hook candidate exports
+- Rule-based timelapse suggestions
+- Rule-based quiet-section detection
+- Suggestion TXT export
+- Combined review CSV export
+
+Deferred:
+
+- Verified Premiere/DaVinci/Final Cut marker import templates
+- Project save/load
+- Clip grouping UI
+- Shorts/hook candidate scoring beyond simple rules
 
 ## V5 - OBS Sync
 

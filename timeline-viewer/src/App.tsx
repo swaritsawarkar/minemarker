@@ -6,20 +6,23 @@ import {
   Filter,
   Gauge,
   Gem,
+  Lightbulb,
   ListFilter,
   Play,
+  Scissors,
   Skull,
   Upload,
   Video
 } from 'lucide-react';
-import type { MineMarkerExport, TimelineItem } from './types';
+import type { CreatorSuggestion, MineMarkerExport, TimelineItem } from './types';
 import { downloadTextFile } from './lib/download';
+import { buildCreatorSuggestions, exportReviewCsv, exportSuggestionNotes } from './lib/suggestions';
 import { exportEditingNotes, exportMarkerCsv, formatTime, normalizeSession, toTimelineItems } from './lib/timeline';
 
 const fallbackSession: MineMarkerExport = {
   project: 'MineMarker',
   schema_version: '1.0',
-  mod_version: '3.0.0',
+  mod_version: '2.0.0',
   minecraft_version: '26.1.2',
   session: {
     id: 'demo',
@@ -120,16 +123,17 @@ export function App() {
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   const timelineItems = useMemo(() => toTimelineItems(session, offset), [session, offset]);
+  const duration = Math.max(session.session.duration_seconds || 1, ...timelineItems.map((item) => item.adjustedTimestamp), 1);
+  const suggestions = useMemo(() => buildCreatorSuggestions(timelineItems, duration), [duration, timelineItems]);
   const filteredItems = useMemo(() => {
     return timelineItems.filter((item) => {
       if (filter === 'markers') return item.kind === 'marker';
       if (filter === 'events') return item.kind === 'event';
-      if (filter === 'high') return item.importance === 'high' || /death|diamond|debris|dimension/.test(item.type);
+      if (filter === 'high') return item.importance === 'high' || /death|diamond|debris|dimension|low_health/.test(`${item.type} ${item.label}`.toLowerCase());
       return true;
     });
   }, [filter, timelineItems]);
   const selected = filteredItems.find((item) => item.key === selectedKey) || filteredItems[0] || timelineItems[0];
-  const duration = Math.max(session.session.duration_seconds || 1, ...timelineItems.map((item) => item.adjustedTimestamp), 1);
 
   function handleJson(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
@@ -157,10 +161,23 @@ export function App() {
 
   function jumpTo(item: TimelineItem) {
     setSelectedKey(item.key);
+    jumpToSeconds(item.adjustedTimestamp);
+  }
+
+  function jumpToSeconds(seconds: number) {
     if (videoRef.current) {
-      videoRef.current.currentTime = item.adjustedTimestamp;
+      videoRef.current.currentTime = Math.max(0, seconds);
       void videoRef.current.play().catch(() => undefined);
     }
+  }
+
+  function jumpToSuggestion(suggestion: CreatorSuggestion) {
+    const sourceItem = timelineItems.find((item) => suggestion.sourceKeys.includes(item.key));
+    if (sourceItem) {
+      jumpTo(sourceItem);
+      return;
+    }
+    jumpToSeconds(suggestion.startSeconds);
   }
 
   function exportNotes() {
@@ -169,6 +186,14 @@ export function App() {
 
   function exportCsv() {
     downloadTextFile('editing_markers.csv', exportMarkerCsv(filteredItems), 'text/csv;charset=utf-8');
+  }
+
+  function exportSuggestions() {
+    downloadTextFile('editing_suggestions.txt', exportSuggestionNotes(session, suggestions), 'text/plain;charset=utf-8');
+  }
+
+  function exportReview() {
+    downloadTextFile('editor_review.csv', exportReviewCsv(timelineItems, suggestions), 'text/csv;charset=utf-8');
   }
 
   return (
@@ -237,6 +262,7 @@ export function App() {
           <div className="stats">
             <span>{session.markers.length} markers</span>
             <span>{session.events.length} events</span>
+            <span>{suggestions.length} suggestions</span>
             <span>{formatTime(session.session.duration_seconds)}</span>
           </div>
         </header>
@@ -323,10 +349,34 @@ export function App() {
                 <span className={`row-icon ${item.kind}`}>{iconFor(item)}</span>
                 <span>
                   <strong>{item.label}</strong>
-                  <em>{item.adjustedFormatted} · {item.type}</em>
+                  <em>{item.adjustedFormatted} - {item.type}</em>
                 </span>
               </button>
             ))}
+          </div>
+        </section>
+
+        <section className="panel suggestion-list">
+          <div className="section-heading">
+            <h2>Suggestions</h2>
+            <Lightbulb size={16} />
+          </div>
+          <div className="rows suggestion-rows">
+            {suggestions.length > 0 ? (
+              suggestions.slice(0, 7).map((suggestion) => (
+                <button key={suggestion.key} className={`row suggestion-row ${suggestion.priority}`} onClick={() => jumpToSuggestion(suggestion)}>
+                  <span className={`row-icon ${suggestion.priority}`}>
+                    <Scissors size={15} />
+                  </span>
+                  <span>
+                    <strong>{suggestion.title}</strong>
+                    <em>{suggestionRange(suggestion)} - {suggestion.kind.replace('_', ' ')}</em>
+                  </span>
+                </button>
+              ))
+            ) : (
+              <p className="hint">No suggestions generated.</p>
+            )}
           </div>
         </section>
 
@@ -338,6 +388,14 @@ export function App() {
           <button onClick={exportCsv}>
             <Download size={17} />
             Export CSV
+          </button>
+          <button onClick={exportSuggestions}>
+            <Download size={17} />
+            Suggestions
+          </button>
+          <button onClick={exportReview}>
+            <Download size={17} />
+            Review CSV
           </button>
         </section>
       </aside>
@@ -357,4 +415,11 @@ function iconFor(item: TimelineItem) {
   if (/death/.test(item.type)) return <Skull size={15} />;
   if (item.kind === 'event') return <Gauge size={15} />;
   return <Play size={15} />;
+}
+
+function suggestionRange(suggestion: CreatorSuggestion): string {
+  if (suggestion.formattedEnd) {
+    return `${suggestion.formattedStart}-${suggestion.formattedEnd}`;
+  }
+  return suggestion.formattedStart;
 }

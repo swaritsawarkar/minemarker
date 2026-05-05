@@ -1,0 +1,9 @@
+kind,priority,start_seconds,start_time,end_seconds,end_time,label,source,notes,color
+marker,manual,145,00:02:25,,,diamond_ore,manual,found diamonds near lava,green
+marker,manual,487,00:08:07,,,funny_moment,manual,creeper jumpscare,green
+event,high,621,00:10:21,,,Dimension changed,dimension_changed,"from: minecraft:overworld, to: minecraft:the_nether",red
+event,medium,990,00:16:30,,,Low health warning,low_health,"health: 5.0, threshold: 6.0",yellow
+clip_candidate,high,145,00:02:25,,,diamond_ore,marker-1,"High-impact Minecraft moment based on marker/event type, label, or importance.",red
+clip_candidate,medium,487,00:08:07,,,funny_moment,marker-2,Manual creator marker looks like a useful review beat.,yellow
+clip_candidate,high,621,00:10:21,,,Dimension changed,event-1,"High-impact Minecraft moment based on marker/event type, label, or importance.",red
+boring_gap,low,990,00:16:30,3312,00:55:12,Long quiet stretch,event-2 session_end,"No MineMarker markers or events for 00:38:42. Review for cuts, timelapse, or removal.",blue

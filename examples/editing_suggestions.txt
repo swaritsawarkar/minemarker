@@ -1,0 +1,11 @@
+MineMarker Creator Suggestions: hardcore-ep-3
+World: Hardcore World
+Duration: 00:55:12
+
+These suggestions are rule-based. They are not AI analysis and should be reviewed by the editor.
+
+Suggestions:
+00:02:25 | high | clip_candidate | diamond_ore | High-impact Minecraft moment based on marker/event type, label, or importance.
+00:08:07 | medium | clip_candidate | funny_moment | Manual creator marker looks like a useful review beat.
+00:10:21 | high | clip_candidate | Dimension changed | High-impact Minecraft moment based on marker/event type, label, or importance.
+00:16:30-00:55:12 | low | boring_gap | Long quiet stretch | No MineMarker markers or events for 00:38:42. Review for cuts, timelapse, or removal.

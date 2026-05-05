@@ -323,13 +323,22 @@ button {
 }
 
 .tick span {
+  display: none;
   position: absolute;
   top: 61px;
   left: 50%;
   transform: translateX(-50%);
   min-width: 64px;
+  border-radius: 999px;
+  padding: 2px 5px;
+  background: rgba(7, 11, 13, 0.92);
   color: #aebfb8;
   font-size: 0.72rem;
+}
+
+.tick:hover span,
+.tick.selected span {
+  display: block;
 }
 
 .time-scale {
@@ -445,9 +454,44 @@ dd {
   color: #8cd8ff;
 }
 
+.suggestion-list {
+  min-height: 0;
+}
+
+.suggestion-rows {
+  max-height: 230px;
+}
+
+.suggestion-row.high {
+  border-color: rgba(255, 121, 121, 0.3);
+}
+
+.suggestion-row.medium {
+  border-color: rgba(244, 184, 73, 0.28);
+}
+
+.suggestion-row.low {
+  border-color: rgba(98, 200, 255, 0.2);
+}
+
+.row-icon.high {
+  background: rgba(255, 121, 121, 0.14);
+  color: #ff9a9a;
+}
+
+.row-icon.medium {
+  background: rgba(244, 184, 73, 0.14);
+  color: #ffd37a;
+}
+
+.row-icon.low {
+  background: rgba(98, 200, 255, 0.14);
+  color: #8cd8ff;
+}
+
 .export-bar {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 8px;
 }
 
@@ -467,6 +511,10 @@ dd {
     grid-column: 1 / -1;
     display: grid;
     grid-template-columns: minmax(0, 1fr) minmax(0, 1.5fr);
+  }
+
+  .suggestion-list {
+    grid-column: 1 / -1;
   }
 
   .export-bar {
@@ -492,5 +540,10 @@ dd {
 
   .rows {
     max-height: none;
+  }
+
+  .tick:hover span,
+  .tick.selected span {
+    display: none;
   }
 }

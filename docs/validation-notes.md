@@ -20,6 +20,12 @@
 - Launched local Vite dev server.
 - Captured desktop and mobile screenshots with installed Chrome through Playwright fallback.
 - Clicked a timeline tick and confirmed selected marker details changed.
+- Ran V4 timeline viewer unit tests after adding creator suggestions.
+- Ran V4 timeline viewer production build.
+- Captured V4 desktop and mobile screenshots with installed Chrome through Playwright fallback.
+- Confirmed V4 suggestions panel renders, generated 5 suggestions from the example session, and `Review CSV` button renders.
+- Confirmed mobile timeline tick labels are hidden to avoid overlapping timestamps.
+- Re-ran `.\gradlew.bat clean build` for the Fabric mod after V4 viewer changes.
 
 ## Not Performed
 
@@ -34,3 +40,7 @@
 `.\gradlew.bat clean build` succeeded for V2 after adding automatic event detection.
 
 `npm test` and `npm run build` succeeded for the V3 timeline viewer.
+
+`npm test` and `npm run build` succeeded for the V4 timeline viewer after adding creator suggestions and review exports.
+
+`.\gradlew.bat clean build` still succeeded for the Fabric mod after V4 documentation/viewer changes.
