@@ -106,3 +106,12 @@ export interface DesktopModStatus {
   minecraftDirectory: string;
   message?: string;
 }
+
+export interface DesktopLatestSessionResult {
+  found: boolean;
+  sessionsDirectory: string;
+  sessionPath?: string;
+  sessionId?: string;
+  modifiedAt?: string;
+  content?: string;
+}

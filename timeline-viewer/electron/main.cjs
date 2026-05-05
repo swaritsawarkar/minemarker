@@ -47,6 +47,10 @@ function getModsDirectory() {
   return path.join(getMinecraftDirectory(), 'mods');
 }
 
+function getSessionsDirectory() {
+  return path.join(getMinecraftDirectory(), 'minemarker', 'sessions');
+}
+
 function getBundledModPath() {
   if (app.isPackaged) {
     return path.join(process.resourcesPath, 'bundled-mod', MOD_FILE_NAME);
@@ -97,6 +101,59 @@ ipcMain.handle('minemarker:open-mods-folder', async () => {
   await fs.mkdir(modsDirectory, { recursive: true });
   await shell.openPath(modsDirectory);
   return { modsDirectory };
+});
+
+ipcMain.handle('minemarker:get-latest-session', async () => {
+  const sessionsDirectory = getSessionsDirectory();
+  let entries;
+
+  try {
+    entries = await fs.readdir(sessionsDirectory, { withFileTypes: true });
+  } catch (error) {
+    if (error && error.code === 'ENOENT') {
+      return { found: false, sessionsDirectory };
+    }
+    throw error;
+  }
+
+  const candidates = [];
+  for (const entry of entries) {
+    if (!entry.isDirectory()) continue;
+    const sessionPath = path.join(sessionsDirectory, entry.name, 'session.json');
+    try {
+      const stats = await fs.stat(sessionPath);
+      candidates.push({
+        sessionId: entry.name,
+        sessionPath,
+        modifiedAtMs: stats.mtimeMs,
+        modifiedAt: stats.mtime.toISOString()
+      });
+    } catch {
+      // Ignore incomplete export folders.
+    }
+  }
+
+  candidates.sort((a, b) => b.modifiedAtMs - a.modifiedAtMs);
+  const latest = candidates[0];
+  if (!latest) {
+    return { found: false, sessionsDirectory };
+  }
+
+  return {
+    found: true,
+    sessionsDirectory,
+    sessionPath: latest.sessionPath,
+    sessionId: latest.sessionId,
+    modifiedAt: latest.modifiedAt,
+    content: await fs.readFile(latest.sessionPath, 'utf8')
+  };
+});
+
+ipcMain.handle('minemarker:open-sessions-folder', async () => {
+  const sessionsDirectory = getSessionsDirectory();
+  await fs.mkdir(sessionsDirectory, { recursive: true });
+  await shell.openPath(sessionsDirectory);
+  return { sessionsDirectory };
 });
 
 app.whenReady().then(() => {

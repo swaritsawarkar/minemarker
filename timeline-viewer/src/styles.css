@@ -162,6 +162,7 @@ button {
 }
 
 .file-control:hover,
+.load-last-control:hover,
 .text-action:hover,
 .segmented button:hover,
 .export-bar button:hover {
@@ -171,6 +172,17 @@ button {
 
 .file-control input {
   display: none;
+}
+
+.load-last-control {
+  width: 100%;
+  border-color: rgba(80, 219, 89, 0.55);
+  background: rgba(80, 219, 89, 0.12);
+}
+
+.load-last-control:disabled {
+  cursor: not-allowed;
+  opacity: 0.58;
 }
 
 .file-meta {
@@ -250,6 +262,12 @@ button {
   border-color: rgba(255, 77, 72, 0.42);
   background: rgba(255, 77, 72, 0.08);
   color: #ffb0a8;
+}
+
+.session-status {
+  border-color: rgba(66, 216, 255, 0.18);
+  background: rgba(66, 216, 255, 0.06);
+  color: #b8edf8;
 }
 
 .offset-control {

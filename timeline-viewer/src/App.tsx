@@ -123,6 +123,13 @@ type InstallState = {
   error: string | null;
 };
 
+type SessionLoadState = {
+  loading: boolean;
+  message: string;
+  error: string | null;
+  latestPath: string | null;
+};
+
 export function App() {
   const [session, setSession] = useState<MineMarkerExport>(fallbackSession);
   const [jsonName, setJsonName] = useState('example-session.json');
@@ -137,6 +144,12 @@ export function App() {
     loading: false,
     message: window.mineMarkerDesktop ? 'Checking Minecraft install...' : 'Desktop installer is available in the portable app.',
     error: null
+  });
+  const [sessionLoadState, setSessionLoadState] = useState<SessionLoadState>({
+    loading: false,
+    message: window.mineMarkerDesktop ? 'Load the newest session after you stop recording.' : 'Use custom session loading in the web viewer.',
+    error: null,
+    latestPath: null
   });
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
@@ -227,14 +240,64 @@ export function App() {
 
     file.text()
       .then((text) => {
-        const parsed = normalizeSession(JSON.parse(text));
-        setSession(parsed);
-        setJsonName(file.name);
-        setOffset(parsed.session.video_offset_seconds || 0);
-        setSelectedKey(parsed.markers[0] ? `marker-${parsed.markers[0].id}` : parsed.events[0] ? `event-${parsed.events[0].id}` : '');
+        loadSessionText(text, file.name);
         setError(null);
       })
       .catch((reason: unknown) => setError(reason instanceof Error ? reason.message : 'Could not load JSON file.'));
+  }
+
+  function loadSessionText(text: string, sourceName: string, sourcePath?: string) {
+    const parsed = normalizeSession(JSON.parse(text));
+    setSession(parsed);
+    setJsonName(sourceName);
+    setOffset(parsed.session.video_offset_seconds || 0);
+    setSelectedKey(parsed.markers[0] ? `marker-${parsed.markers[0].id}` : parsed.events[0] ? `event-${parsed.events[0].id}` : '');
+    setSessionLoadState({
+      loading: false,
+      message: `Loaded ${parsed.session.name}`,
+      error: null,
+      latestPath: sourcePath || null
+    });
+  }
+
+  async function loadLatestSession() {
+    if (!window.mineMarkerDesktop) {
+      setSessionLoadState({
+        loading: false,
+        message: 'Load Last Session works in the Windows .exe.',
+        error: null,
+        latestPath: null
+      });
+      return;
+    }
+
+    setSessionLoadState((current) => ({ ...current, loading: true, error: null }));
+    try {
+      const latest = await window.mineMarkerDesktop.getLatestSession();
+      if (!latest.found || !latest.content) {
+        setSessionLoadState({
+          loading: false,
+          message: `No MineMarker session found in ${latest.sessionsDirectory}`,
+          error: null,
+          latestPath: null
+        });
+        return;
+      }
+
+      loadSessionText(latest.content, latest.sessionId || 'latest-session.json', latest.sessionPath);
+    } catch (reason) {
+      setSessionLoadState((current) => ({
+        ...current,
+        loading: false,
+        message: 'Could not load the latest session.',
+        error: reason instanceof Error ? reason.message : 'Unknown latest session error.'
+      }));
+    }
+  }
+
+  async function openSessionsFolder() {
+    if (!window.mineMarkerDesktop) return;
+    await window.mineMarkerDesktop.openSessionsFolder();
   }
 
   function handleVideo(event: ChangeEvent<HTMLInputElement>) {
@@ -321,9 +384,13 @@ export function App() {
 
         <section className="panel stack">
           <h2>Session Files</h2>
+          <button className="file-control load-last-control" disabled={sessionLoadState.loading || !window.mineMarkerDesktop} onClick={loadLatestSession}>
+            <RefreshCw size={18} />
+            <span>{sessionLoadState.loading ? 'Loading Latest Session' : 'Load Last Session'}</span>
+          </button>
           <label className="file-control">
             <FileJson size={18} />
-            <span>Load JSON</span>
+            <span>Load Custom Session</span>
             <input type="file" accept="application/json,.json" onChange={handleJson} />
           </label>
           <label className="file-control">
@@ -335,6 +402,16 @@ export function App() {
             <strong>{jsonName}</strong>
             <span>{videoName}</span>
           </div>
+          <div className={sessionLoadState.error ? 'install-status error-status' : 'install-status session-status'}>
+            {sessionLoadState.error ? <AlertTriangle size={15} /> : <CheckCircle2 size={15} />}
+            <span>{sessionLoadState.error || sessionLoadState.message}</span>
+          </div>
+          {window.mineMarkerDesktop && (
+            <button className="text-action" onClick={openSessionsFolder}>
+              <FolderOpen size={15} />
+              Open sessions folder
+            </button>
+          )}
           {error && <p className="error">{error}</p>}
         </section>
 
