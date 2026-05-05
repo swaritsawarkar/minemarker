@@ -12,7 +12,8 @@
 - V4 suggestions are rule-based and depend on marker/event labels, event keys, importance, and quiet gaps. They are not AI analysis.
 - The V4.1.1 portable `.exe` is unsigned, so Windows may show an unknown publisher warning.
 - The V4.1.1 portable `.exe` is Windows x64 only.
-- The timeline viewer `.exe` does not live-connect to Minecraft yet. It reads `session.json` files exported by the Fabric mod.
+- The V4.2 portable `.exe` can install the bundled Fabric mod into the default Minecraft directory, but it does not live-connect to Minecraft yet. It reads `session.json` files exported by the Fabric mod.
+- Custom Minecraft launcher directories may need manual jar placement because V4.2 targets the default `.minecraft/mods` folder.
 - Timeline viewer browser QA used installed Chrome through a Playwright fallback because the Browser plugin tool was not exposed.
 - `npm install` reports moderate advisories in the Vite/dev dependency tree; no force upgrade was applied.
 - Local PATH had Java 8 only; building requires Java 25.

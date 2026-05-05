@@ -1,6 +1,6 @@
 # MineMarker Timeline Viewer
 
-The V4.1.1 timeline viewer is a local React + Vite app packaged as both a web app and a Windows portable Electron `.exe`. It loads a MineMarker `session.json` file and a local video file, displays manual markers and automatic events on a timeline, lets the user jump video playback by clicking timeline items, applies a manual offset, filters items, exports editing notes, and generates rule-based creator suggestions.
+The V4.2 timeline viewer is a local React + Vite app packaged as a Windows portable Electron `.exe`. The desktop app bundles the MineMarker Fabric mod and can install it into the default Minecraft mods folder with one button. It loads a MineMarker `session.json` file and a local video file, displays manual markers and automatic events on a timeline, lets the user jump video playback by clicking timeline items, applies a manual offset, filters items, exports editing notes, and generates rule-based creator suggestions.
 
 No backend, cloud account, login, telemetry, or upload service is required.
 
@@ -59,20 +59,21 @@ npm test
 
 ## Workflow
 
-1. Install the MineMarker Fabric mod jar in `.minecraft/mods/`.
-2. In Minecraft, run `/minemarker start`, add markers/events, then `/minemarker stop`.
-3. Open the timeline viewer web app or `.exe`.
-4. Click `Load JSON` and select the exported MineMarker `session.json`.
-5. Click `Load Video` and select the matching recording.
-6. Adjust `Offset` if the recording started before or after the MineMarker session.
-7. Click timeline ticks or list rows to jump the video.
-8. Filter by markers, events, or high-priority moments.
-9. Review rule-based suggestions for clip candidates, timelapse candidates, and quiet sections.
-10. Export `editing_notes.txt`, `editing_markers.csv`, `editing_suggestions.txt`, or `editor_review.csv`.
+1. Open the Windows portable `.exe`.
+2. Click `Install Minecraft Mod`.
+3. Launch Minecraft with Fabric.
+4. In Minecraft, run `/minemarker start`, add markers/events, then `/minemarker stop`.
+5. Click `Load JSON` and select the exported MineMarker `session.json`.
+6. Click `Load Video` and select the matching recording.
+7. Adjust `Offset` if the recording started before or after the MineMarker session.
+8. Click timeline ticks or list rows to jump the video.
+9. Filter by markers, events, or high-priority moments.
+10. Review rule-based suggestions for clip candidates, timelapse candidates, and quiet sections.
+11. Export `editing_notes.txt`, `editing_markers.csv`, `editing_suggestions.txt`, or `editor_review.csv`.
 
 ## How Minecraft Sync Works
 
-V4.1.1 does not live-connect the desktop app to Minecraft. The Fabric mod records the session and exports files. The desktop app reads those files and syncs them with a local video using timestamps and manual offset correction.
+V4.2 does not live-connect the desktop app to Minecraft. The desktop app installs the bundled Fabric mod. The Fabric mod records the session and exports files. The desktop app reads those files and syncs them with a local video using timestamps and manual offset correction.
 
 ## V4 Exports
 
@@ -89,3 +90,4 @@ V4.1.1 does not live-connect the desktop app to Minecraft. The Fabric mod record
 - DaVinci/Premiere-specific marker imports are not verified.
 - Large videos depend on browser playback support.
 - The portable `.exe` is Windows x64 only and unsigned.
+- One-click install uses the default Minecraft directory. Custom launcher directories may still need manual jar placement.

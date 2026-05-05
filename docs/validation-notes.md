@@ -55,3 +55,7 @@
 Electron render smoke test passed for V4.1.1 by confirming visible `MineMarker`, `Minecraft Sync`, and `Load JSON` text in the app window.
 
 `.\gradlew.bat clean build` succeeded again before the V4.1.1 release assets were prepared.
+
+V4.2 added an Electron IPC installer that copies the bundled Fabric mod into the default Minecraft mods folder.
+
+V4.2 viewer unit tests and production build passed before the installer and UI commits were made.

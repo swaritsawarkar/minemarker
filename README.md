@@ -1,12 +1,12 @@
 # MineMarker
 
-MineMarker is a Minecraft creator editing assistant. The current local release is V4.1.1: a Fabric client-side mod plus a fixed Windows portable timeline viewer `.exe`.
+MineMarker is a Minecraft creator editing assistant. The current local release is V4.2: a Windows portable desktop app that can install the bundled Fabric mod, then load MineMarker exports with a local video.
 
 MineMarker is not a replay or cinematic camera mod. Replay Mod and Flashback already handle replay workflows well. MineMarker focuses on creator editing workflow: clean timestamps, marker notes, Minecraft context, and manual video offset support for recorded footage.
 
 ## Current Status
 
-V4.1.1 is the portable desktop app hotfix release.
+V4.2 is the one-click mod installer and viewer redesign release.
 
 Implemented:
 - Fabric client mod for Minecraft Java `26.1.2`
@@ -30,6 +30,8 @@ Implemented:
 - Export `editor_review.csv` for spreadsheet/editor review
 - Windows portable `.exe` build for the timeline viewer
 - Fixed desktop asset loading for Electron local file execution
+- One-click Fabric mod install from inside the `.exe`
+- Redesigned desktop UI with a setup-first creator workflow
 
 Not implemented yet:
 - Advancement detection
@@ -85,14 +87,15 @@ minemarker-mod/build/libs/
 
 Important sync note:
 
-The `.exe` does not connect directly to Minecraft in V4.1.1. Sync is file-based:
+The `.exe` bundles the MineMarker Fabric mod and can install it automatically. Sync is still file-based:
 
-1. Install the MineMarker Fabric mod jar in `.minecraft/mods/`.
-2. In Minecraft, run `/minemarker start`, add markers/events, then `/minemarker stop`.
-3. MineMarker exports `session.json` under `.minecraft/minemarker/sessions/<session_id>/`.
-4. Open the timeline viewer `.exe`.
-5. Load `session.json` and the matching OBS/video file.
-6. Use offset correction if the recording started before or after the MineMarker session.
+1. Open the MineMarker Timeline Viewer `.exe`.
+2. Click `Install Minecraft Mod`.
+3. Launch Minecraft with Fabric.
+4. Run `/minemarker start`, add markers/events, then `/minemarker stop`.
+5. MineMarker exports `session.json` under `.minecraft/minemarker/sessions/<session_id>/`.
+6. Load `session.json` and the matching OBS/video file in the `.exe`.
+7. Use offset correction if the recording started before or after the MineMarker session.
 
 Run as a web app:
 

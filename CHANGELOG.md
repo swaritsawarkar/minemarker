@@ -1,5 +1,18 @@
 # Changelog
 
+## v4.2.0 - One-Click Mod Installer and UI Redesign
+
+Added:
+- Bundled MineMarker Fabric mod inside the Windows desktop app.
+- One-click `Install Minecraft Mod` button that copies the mod jar to the default `.minecraft/mods` folder.
+- Desktop IPC bridge for safe filesystem install actions.
+- Sharper Minecraft-inspired UI redesign with setup-first workflow.
+
+Known limits:
+- Sync is still file-based, not live Minecraft-to-desktop streaming.
+- Custom launcher directories may need manual jar placement.
+- The `.exe` remains unsigned.
+
 ## v4.1.1 - Portable App Hotfix
 
 Fixed:
