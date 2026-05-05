@@ -59,3 +59,11 @@ Electron render smoke test passed for V4.1.1 by confirming visible `MineMarker`,
 V4.2 added an Electron IPC installer that copies the bundled Fabric mod into the default Minecraft mods folder.
 
 V4.2 viewer unit tests and production build passed before the installer and UI commits were made.
+
+V4.2 final validation passed:
+
+- `.\gradlew.bat clean build`
+- `npm test`
+- `npm run desktop:build`
+- packaged Electron installer smoke test with a temporary `%APPDATA%`
+- verified installed jar hash: `BB1E23AB599C0B6A7E8234C220A2853E5A7299AA6A07C13A6CDFCB34B9B44634`
