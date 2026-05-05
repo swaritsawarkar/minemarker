@@ -20,6 +20,7 @@ saves/
 node_modules/
 coverage/
 desktop-dist/
+timeline-viewer/bundled-mod/
 
 # IDE/editor
 .idea/

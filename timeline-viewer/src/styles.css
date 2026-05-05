@@ -169,6 +169,57 @@ button {
   font-weight: 800;
 }
 
+.primary-install,
+.text-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  border: 1px solid rgba(54, 211, 153, 0.42);
+  border-radius: 7px;
+  background: linear-gradient(180deg, rgba(54, 211, 153, 0.22), rgba(54, 211, 153, 0.1));
+  color: #f2fff9;
+  padding: 11px 12px;
+  font-weight: 800;
+}
+
+.primary-install:disabled {
+  cursor: not-allowed;
+  opacity: 0.58;
+}
+
+.text-action {
+  justify-content: flex-start;
+  border-color: rgba(164, 197, 181, 0.16);
+  background: #10181b;
+  color: #d7ede4;
+  font-size: 0.84rem;
+}
+
+.install-status {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  border: 1px solid rgba(54, 211, 153, 0.2);
+  border-radius: 7px;
+  padding: 9px 10px;
+  background: rgba(54, 211, 153, 0.08);
+  color: #aef4d5;
+  font-size: 0.82rem;
+  line-height: 1.35;
+}
+
+.install-status svg {
+  flex: 0 0 auto;
+  margin-top: 1px;
+}
+
+.install-status.error-status {
+  border-color: rgba(255, 121, 121, 0.32);
+  background: rgba(255, 121, 121, 0.08);
+  color: #ffb0b0;
+}
+
 .offset-control {
   display: grid;
   grid-template-columns: 1fr 105px;

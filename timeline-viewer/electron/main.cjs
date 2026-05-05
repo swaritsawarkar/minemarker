@@ -1,5 +1,9 @@
-const { app, BrowserWindow, shell } = require('electron');
+const { app, BrowserWindow, ipcMain, shell } = require('electron');
+const fs = require('fs/promises');
 const path = require('path');
+const os = require('os');
+
+const MOD_FILE_NAME = 'minemarker-2.0.0.jar';
 
 function createWindow() {
   const window = new BrowserWindow({
@@ -10,9 +14,10 @@ function createWindow() {
     backgroundColor: '#070b0d',
     title: 'MineMarker Timeline Viewer',
     webPreferences: {
+      preload: path.join(__dirname, 'preload.cjs'),
       contextIsolation: true,
       nodeIntegration: false,
-      sandbox: true
+      sandbox: false
     }
   });
 
@@ -26,6 +31,73 @@ function createWindow() {
     return { action: 'deny' };
   });
 }
+
+function getMinecraftDirectory() {
+  if (process.platform === 'win32') {
+    const appData = process.env.APPDATA || path.join(os.homedir(), 'AppData', 'Roaming');
+    return path.join(appData, '.minecraft');
+  }
+  if (process.platform === 'darwin') {
+    return path.join(os.homedir(), 'Library', 'Application Support', 'minecraft');
+  }
+  return path.join(os.homedir(), '.minecraft');
+}
+
+function getModsDirectory() {
+  return path.join(getMinecraftDirectory(), 'mods');
+}
+
+function getBundledModPath() {
+  if (app.isPackaged) {
+    return path.join(process.resourcesPath, 'bundled-mod', MOD_FILE_NAME);
+  }
+  return path.join(__dirname, '..', 'bundled-mod', MOD_FILE_NAME);
+}
+
+async function getModStatus() {
+  const modsDirectory = getModsDirectory();
+  const installedPath = path.join(modsDirectory, MOD_FILE_NAME);
+  const bundledPath = getBundledModPath();
+  const [installed, bundled] = await Promise.all([
+    fs.access(installedPath).then(() => true).catch(() => false),
+    fs.access(bundledPath).then(() => true).catch(() => false)
+  ]);
+
+  return {
+    installed,
+    bundled,
+    modsDirectory,
+    installedPath,
+    bundledPath,
+    minecraftDirectory: getMinecraftDirectory()
+  };
+}
+
+ipcMain.handle('minemarker:get-mod-status', async () => {
+  return getModStatus();
+});
+
+ipcMain.handle('minemarker:install-mod', async () => {
+  const status = await getModStatus();
+  if (!status.bundled) {
+    throw new Error(`Bundled mod jar was not found: ${status.bundledPath}`);
+  }
+
+  await fs.mkdir(status.modsDirectory, { recursive: true });
+  await fs.copyFile(status.bundledPath, status.installedPath);
+
+  return {
+    ...await getModStatus(),
+    message: `Installed ${MOD_FILE_NAME} to ${status.modsDirectory}`
+  };
+});
+
+ipcMain.handle('minemarker:open-mods-folder', async () => {
+  const modsDirectory = getModsDirectory();
+  await fs.mkdir(modsDirectory, { recursive: true });
+  await shell.openPath(modsDirectory);
+  return { modsDirectory };
+});
 
 app.whenReady().then(() => {
   createWindow();

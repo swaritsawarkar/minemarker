@@ -1,6 +1,6 @@
 {
   "name": "minemarker-timeline-viewer",
-  "version": "4.1.1",
+  "version": "4.2.0",
   "description": "Local MineMarker timeline viewer desktop app for Minecraft creator editing workflows.",
   "author": "MineMarker",
   "private": true,
@@ -9,8 +9,9 @@
   "scripts": {
     "dev": "vite --host 127.0.0.1",
     "build": "tsc --noEmit && vite build",
-    "desktop:dev": "npm run build && electron electron/main.cjs",
-    "desktop:build": "npm run build && electron-builder --win portable",
+    "prepare:mod-bundle": "node scripts/copy-mod.mjs",
+    "desktop:dev": "npm run build && npm run prepare:mod-bundle && electron electron/main.cjs",
+    "desktop:build": "npm run build && npm run prepare:mod-bundle && electron-builder --win portable",
     "preview": "vite preview --host 127.0.0.1",
     "test": "vitest run"
   },
@@ -24,6 +25,12 @@
       "dist/**/*",
       "electron/**/*",
       "package.json"
+    ],
+    "extraResources": [
+      {
+        "from": "bundled-mod/minemarker-2.0.0.jar",
+        "to": "bundled-mod/minemarker-2.0.0.jar"
+      }
     ],
     "win": {
       "signAndEditExecutable": false,

@@ -1,20 +1,25 @@
-import { ChangeEvent, useMemo, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useMemo, useRef, useState } from 'react';
 import {
+  AlertTriangle,
+  CheckCircle2,
   Clock,
   Download,
   FileJson,
   Filter,
+  FolderOpen,
   Gauge,
   Gem,
+  HardDriveDownload,
   Lightbulb,
   ListFilter,
   Play,
+  RefreshCw,
   Scissors,
   Skull,
   Upload,
   Video
 } from 'lucide-react';
-import type { CreatorSuggestion, MineMarkerExport, TimelineItem } from './types';
+import type { CreatorSuggestion, DesktopModStatus, MineMarkerExport, TimelineItem } from './types';
 import { downloadTextFile } from './lib/download';
 import { buildCreatorSuggestions, exportReviewCsv, exportSuggestionNotes } from './lib/suggestions';
 import { exportEditingNotes, exportMarkerCsv, formatTime, normalizeSession, toTimelineItems } from './lib/timeline';
@@ -111,6 +116,13 @@ const fallbackSession: MineMarkerExport = {
 
 type FilterMode = 'all' | 'markers' | 'events' | 'high';
 
+type InstallState = {
+  status: DesktopModStatus | null;
+  loading: boolean;
+  message: string;
+  error: string | null;
+};
+
 export function App() {
   const [session, setSession] = useState<MineMarkerExport>(fallbackSession);
   const [jsonName, setJsonName] = useState('example-session.json');
@@ -120,6 +132,12 @@ export function App() {
   const [filter, setFilter] = useState<FilterMode>('all');
   const [selectedKey, setSelectedKey] = useState<string>('marker-1');
   const [error, setError] = useState<string | null>(null);
+  const [installState, setInstallState] = useState<InstallState>({
+    status: null,
+    loading: false,
+    message: window.mineMarkerDesktop ? 'Checking Minecraft install...' : 'Desktop installer is available in the portable app.',
+    error: null
+  });
   const videoRef = useRef<HTMLVideoElement | null>(null);
 
   const timelineItems = useMemo(() => toTimelineItems(session, offset), [session, offset]);
@@ -134,6 +152,74 @@ export function App() {
     });
   }, [filter, timelineItems]);
   const selected = filteredItems.find((item) => item.key === selectedKey) || filteredItems[0] || timelineItems[0];
+
+  useEffect(() => {
+    void refreshModStatus();
+  }, []);
+
+  async function refreshModStatus() {
+    if (!window.mineMarkerDesktop) {
+      setInstallState((current) => ({
+        ...current,
+        loading: false,
+        message: 'Run the Windows .exe to install the Minecraft mod automatically.',
+        error: null
+      }));
+      return;
+    }
+
+    setInstallState((current) => ({ ...current, loading: true, error: null }));
+    try {
+      const status = await window.mineMarkerDesktop.getModStatus();
+      setInstallState({
+        status,
+        loading: false,
+        message: status.installed ? 'MineMarker mod is installed.' : 'MineMarker mod is ready to install.',
+        error: status.bundled ? null : 'Bundled mod jar is missing from this app build.'
+      });
+    } catch (reason) {
+      setInstallState({
+        status: null,
+        loading: false,
+        message: 'Could not check the Minecraft mods folder.',
+        error: reason instanceof Error ? reason.message : 'Unknown installer error.'
+      });
+    }
+  }
+
+  async function installMod() {
+    if (!window.mineMarkerDesktop) {
+      setInstallState((current) => ({
+        ...current,
+        message: 'Automatic install only works in the Windows .exe.',
+        error: null
+      }));
+      return;
+    }
+
+    setInstallState((current) => ({ ...current, loading: true, error: null }));
+    try {
+      const status = await window.mineMarkerDesktop.installMod();
+      setInstallState({
+        status,
+        loading: false,
+        message: status.message || 'MineMarker mod installed.',
+        error: null
+      });
+    } catch (reason) {
+      setInstallState((current) => ({
+        ...current,
+        loading: false,
+        message: 'Install failed.',
+        error: reason instanceof Error ? reason.message : 'Unknown installer error.'
+      }));
+    }
+  }
+
+  async function openModsFolder() {
+    if (!window.mineMarkerDesktop) return;
+    await window.mineMarkerDesktop.openModsFolder();
+  }
 
   function handleJson(event: ChangeEvent<HTMLInputElement>) {
     const file = event.target.files?.[0];
@@ -229,14 +315,28 @@ export function App() {
         <section className="panel stack sync-panel">
           <div className="section-heading">
             <h2>Minecraft Sync</h2>
-            <Gauge size={16} />
+            {installState.status?.installed ? <CheckCircle2 size={16} /> : <HardDriveDownload size={16} />}
           </div>
+          <button className="primary-install" disabled={installState.loading || !window.mineMarkerDesktop} onClick={installMod}>
+            {installState.loading ? <RefreshCw size={17} /> : installState.status?.installed ? <CheckCircle2 size={17} /> : <HardDriveDownload size={17} />}
+            {installState.status?.installed ? 'Reinstall Fabric Mod' : 'Install Minecraft Mod'}
+          </button>
+          <div className={installState.error ? 'install-status error-status' : 'install-status'}>
+            {installState.error ? <AlertTriangle size={15} /> : <CheckCircle2 size={15} />}
+            <span>{installState.error || installState.message}</span>
+          </div>
+          {installState.status?.modsDirectory && (
+            <button className="text-action" onClick={openModsFolder}>
+              <FolderOpen size={15} />
+              Open mods folder
+            </button>
+          )}
           <ol className="sync-steps">
-            <li>Install the Fabric mod jar in `.minecraft/mods`.</li>
+            <li>Click install once. The app copies the mod into `.minecraft/mods`.</li>
             <li>Run `/minemarker start`, add markers, then `/minemarker stop`.</li>
             <li>Load the exported `session.json` and your OBS video here.</li>
           </ol>
-          <p className="hint">V4.1.1 is file-based sync, not live Minecraft connection.</p>
+          <p className="hint">V4.2 is one-click mod install plus file-based video sync.</p>
         </section>
 
         <section className="panel stack">

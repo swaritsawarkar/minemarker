@@ -96,3 +96,13 @@ export interface CreatorSuggestion {
   formattedEnd?: string;
   sourceKeys: string[];
 }
+
+export interface DesktopModStatus {
+  installed: boolean;
+  bundled: boolean;
+  modsDirectory: string;
+  installedPath: string;
+  bundledPath: string;
+  minecraftDirectory: string;
+  message?: string;
+}
