@@ -1,6 +1,6 @@
 # MineMarker Timeline Viewer
 
-The V4 timeline viewer is a local React + Vite web app. It loads a MineMarker `session.json` file and a local video file, displays manual markers and automatic events on a timeline, lets the user jump video playback by clicking timeline items, applies a manual offset, filters items, exports editing notes, and generates rule-based creator suggestions.
+The V4.1 timeline viewer is a local React + Vite app packaged as both a web app and a Windows portable Electron `.exe`. It loads a MineMarker `session.json` file and a local video file, displays manual markers and automatic events on a timeline, lets the user jump video playback by clicking timeline items, applies a manual offset, filters items, exports editing notes, and generates rule-based creator suggestions.
 
 No backend, cloud account, login, telemetry, or upload service is required.
 
@@ -37,6 +37,20 @@ npm run build
 
 The static web app is written to `timeline-viewer/dist/`.
 
+## Build Portable Windows App
+
+```powershell
+npm run desktop:build
+```
+
+The generated `.exe` is written to:
+
+```text
+timeline-viewer/desktop-dist/MineMarker-Timeline-Viewer-<version>-Portable-x64.exe
+```
+
+The portable app is unsigned, so Windows may show an unknown publisher warning.
+
 ## Test
 
 ```powershell
@@ -69,3 +83,4 @@ npm test
 - Suggestions are deterministic rules based on MineMarker timestamps, labels, event keys, importance, and quiet gaps. They are not AI analysis.
 - DaVinci/Premiere-specific marker imports are not verified.
 - Large videos depend on browser playback support.
+- The portable `.exe` is Windows x64 only and unsigned.

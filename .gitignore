@@ -19,6 +19,7 @@ saves/
 # Node / future timeline viewer
 node_modules/
 coverage/
+desktop-dist/
 
 # IDE/editor
 .idea/

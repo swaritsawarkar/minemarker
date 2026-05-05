@@ -1,5 +1,18 @@
 # Changelog
 
+## v4.1.0 - Portable Desktop App
+
+Added:
+- Electron desktop wrapper for the timeline viewer.
+- Windows x64 portable `.exe` build using `electron-builder`.
+- `npm run desktop:build` script.
+- GitHub release asset support for the generated portable executable.
+
+Known limits:
+- The `.exe` is unsigned and may trigger a Windows unknown publisher warning.
+- No auto-update support.
+- Windows x64 packaging only.
+
 ## v4.0.0 - Creator Export Workflow
 
 Added:

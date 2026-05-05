@@ -1,12 +1,12 @@
 # MineMarker
 
-MineMarker is a Minecraft creator editing assistant. The current local release is V4: a Fabric client-side mod plus a local timeline viewer with rule-based creator suggestions and review exports.
+MineMarker is a Minecraft creator editing assistant. The current local release is V4.1: a Fabric client-side mod plus a local timeline viewer with a Windows portable desktop `.exe`.
 
 MineMarker is not a replay or cinematic camera mod. Replay Mod and Flashback already handle replay workflows well. MineMarker focuses on creator editing workflow: clean timestamps, marker notes, Minecraft context, and manual video offset support for recorded footage.
 
 ## Current Status
 
-V4 is the creator export workflow release.
+V4.1 is the portable desktop app packaging release.
 
 Implemented:
 - Fabric client mod for Minecraft Java `26.1.2`
@@ -28,6 +28,7 @@ Implemented:
 - Rule-based clip, timelapse, and quiet-section suggestions
 - Export `editing_suggestions.txt`
 - Export `editor_review.csv` for spreadsheet/editor review
+- Windows portable `.exe` build for the timeline viewer
 
 Not implemented yet:
 - Advancement detection
@@ -81,6 +82,8 @@ minemarker-mod/build/libs/
 
 ## Timeline Viewer
 
+Run as a web app:
+
 ```powershell
 cd timeline-viewer
 npm install
@@ -98,6 +101,20 @@ Build the viewer:
 ```powershell
 npm run build
 ```
+
+Build the Windows portable desktop app:
+
+```powershell
+npm run desktop:build
+```
+
+The generated executable is written to:
+
+```text
+timeline-viewer/desktop-dist/MineMarker-Timeline-Viewer-<version>-Portable-x64.exe
+```
+
+The `.exe` is unsigned. Windows may show an unknown publisher warning.
 
 V4 viewer exports:
 

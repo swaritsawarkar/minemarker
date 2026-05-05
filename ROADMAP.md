@@ -49,6 +49,7 @@ Status: implemented locally.
 - Rule-based quiet-section detection
 - Suggestion TXT export
 - Combined review CSV export
+- Windows portable timeline viewer `.exe` in V4.1
 
 Deferred:
 

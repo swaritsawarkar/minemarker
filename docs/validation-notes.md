@@ -26,6 +26,8 @@
 - Confirmed V4 suggestions panel renders, generated 5 suggestions from the example session, and `Review CSV` button renders.
 - Confirmed mobile timeline tick labels are hidden to avoid overlapping timestamps.
 - Re-ran `.\gradlew.bat clean build` for the Fabric mod after V4 viewer changes.
+- Built V4.1 Windows portable `.exe` with Electron and `electron-builder`.
+- Launched the V4.1 portable `.exe` and confirmed it spawned 4 Electron processes with a MineMarker window title after 12 seconds.
 
 ## Not Performed
 
@@ -44,3 +46,5 @@
 `npm test` and `npm run build` succeeded for the V4 timeline viewer after adding creator suggestions and review exports.
 
 `.\gradlew.bat clean build` still succeeded for the Fabric mod after V4 documentation/viewer changes.
+
+`npm run desktop:build` produced `MineMarker-Timeline-Viewer-4.1.0-Portable-x64.exe`.
