@@ -20,8 +20,19 @@ export function normalizeSession(data: unknown): MineMarkerExport {
   if (!candidate.session || !Array.isArray(candidate.markers) || !Array.isArray(candidate.events)) {
     throw new Error('MineMarker export is missing session, markers, or events.');
   }
+  assertFiniteNumber(candidate.session.duration_seconds, 'Session duration', false);
+  assertFiniteNumber(candidate.session.video_offset_seconds, 'Session video offset', true);
+  candidate.markers.forEach((marker, index) => assertFiniteNumber(marker.timestamp_seconds, `Marker ${index + 1} timestamp`, false));
+  candidate.events.forEach((event, index) => assertFiniteNumber(event.timestamp_seconds, `Event ${index + 1} timestamp`, false));
 
   return candidate;
+}
+
+function assertFiniteNumber(value: unknown, label: string, allowNegative: boolean): void {
+  if (typeof value !== 'number' || !Number.isFinite(value) || (!allowNegative && value < 0)) {
+    const range = allowNegative ? 'a finite number' : 'a finite non-negative number';
+    throw new Error(`${label} must be ${range}.`);
+  }
 }
 
 export function toTimelineItems(data: MineMarkerExport, overrideOffset: number): TimelineItem[] {

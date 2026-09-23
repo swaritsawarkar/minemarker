@@ -55,6 +55,13 @@ describe('timeline helpers', () => {
     expect(() => normalizeSession({ project: 'Other' })).toThrow();
   });
 
+  it('rejects malformed numeric timeline fields before rendering', () => {
+    expect(() => normalizeSession({ ...sample, session: { ...sample.session, duration_seconds: '600' } })).toThrow('Session duration');
+    expect(() => normalizeSession({ ...sample, markers: [{ ...sample.markers[0], timestamp_seconds: -1 }] })).toThrow('Marker 1 timestamp');
+    expect(() => normalizeSession({ ...sample, events: [{ ...sample.events[0], timestamp_seconds: Number.NaN }] })).toThrow('Event 1 timestamp');
+    expect(() => normalizeSession({ ...sample, session: { ...sample.session, video_offset_seconds: Number.POSITIVE_INFINITY } })).toThrow('Session video offset');
+  });
+
   it('combines markers and events by adjusted time', () => {
     const items = toTimelineItems(sample, 1);
     expect(items.map((item) => item.type)).toEqual(['low_health', 'manual']);
