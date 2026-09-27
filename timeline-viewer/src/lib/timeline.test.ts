@@ -70,8 +70,18 @@ describe('timeline helpers', () => {
 
   it('exports notes and csv', () => {
     const items = toTimelineItems(sample, 2);
-    expect(exportEditingNotes(sample, items)).toContain('diamond_ore');
+    const notes = exportEditingNotes(sample, items, 2);
+    expect(notes).toContain('diamond_ore');
+    expect(notes).toContain('Video Offset: 2 seconds');
     expect(exportMarkerCsv(items)).toContain('note with spaces');
+  });
+
+  it('exports the current offset after the editor changes it', () => {
+    const items = toTimelineItems(sample, -3);
+    const notes = exportEditingNotes(sample, items, -3);
+    expect(notes).toContain('Video Offset: -3 seconds');
+    expect(notes).toContain('00:00:07 | marker | manual | diamond_ore');
+    expect(notes).not.toContain('Video Offset: 2 seconds');
   });
 
   it('creates rule-based creator suggestions', () => {

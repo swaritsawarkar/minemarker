@@ -330,7 +330,7 @@ export function App() {
   }
 
   function exportNotes() {
-    downloadTextFile('editing_notes.txt', exportEditingNotes(session, filteredItems), 'text/plain;charset=utf-8');
+    downloadTextFile('editing_notes.txt', exportEditingNotes(session, filteredItems, offset), 'text/plain;charset=utf-8');
   }
 
   function exportCsv() {
