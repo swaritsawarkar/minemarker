@@ -79,13 +79,13 @@ export function toTimelineItems(data: MineMarkerExport, overrideOffset: number):
   return [...markerItems, ...eventItems].sort((a, b) => a.adjustedTimestamp - b.adjustedTimestamp);
 }
 
-export function exportEditingNotes(session: MineMarkerExport, items: TimelineItem[]): string {
+export function exportEditingNotes(session: MineMarkerExport, items: TimelineItem[], videoOffsetSeconds: number): string {
   const lines = [
     `MineMarker Editing Notes: ${session.session.name}`,
     `World: ${session.session.world || 'unknown'}`,
     `Player: ${session.session.player || 'unknown'}`,
     `Duration: ${formatTime(session.session.duration_seconds)}`,
-    `Video Offset: ${session.session.video_offset_seconds} seconds`,
+    `Video Offset: ${videoOffsetSeconds} seconds`,
     '',
     'Timeline:'
   ];
