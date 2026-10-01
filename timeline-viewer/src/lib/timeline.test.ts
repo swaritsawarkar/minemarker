@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { exportEditingNotes, exportMarkerCsv, formatTime, normalizeSession, toTimelineItems } from './timeline';
-import { buildCreatorSuggestions, exportReviewCsv, exportSuggestionNotes } from './suggestions';
+import { buildCreatorSuggestions, exportReviewCsv, exportSuggestionNotes, suggestionSourceItem } from './suggestions';
 import type { MineMarkerExport } from '../types';
 
 const sample: MineMarkerExport = {
@@ -89,6 +89,17 @@ describe('timeline helpers', () => {
     const suggestions = buildCreatorSuggestions(items, 1200);
     expect(suggestions.some((suggestion) => suggestion.kind === 'clip_candidate' && suggestion.priority === 'high')).toBe(true);
     expect(suggestions.some((suggestion) => suggestion.kind === 'boring_gap')).toBe(true);
+  });
+
+  it('seeks to the start of an opening quiet stretch', () => {
+    const lateSession = { ...sample, markers: [{ ...sample.markers[0], timestamp_seconds: 600 }], events: [] };
+    const items = toTimelineItems(lateSession, 0);
+    const suggestions = buildCreatorSuggestions(items, 1200);
+    const openingGap = suggestions.find((suggestion) => suggestion.kind === 'boring_gap' && suggestion.startSeconds === 0);
+    const clip = suggestions.find((suggestion) => suggestion.kind === 'clip_candidate');
+    expect(openingGap).toBeDefined();
+    expect(suggestionSourceItem(openingGap!, items)).toBeUndefined();
+    expect(suggestionSourceItem(clip!, items)?.key).toBe(items[0].key);
   });
 
   it('exports suggestion notes and review csv', () => {

@@ -21,7 +21,7 @@ import {
 } from 'lucide-react';
 import type { CreatorSuggestion, DesktopModStatus, MineMarkerExport, TimelineItem } from './types';
 import { downloadTextFile } from './lib/download';
-import { buildCreatorSuggestions, exportReviewCsv, exportSuggestionNotes } from './lib/suggestions';
+import { buildCreatorSuggestions, exportReviewCsv, exportSuggestionNotes, suggestionSourceItem } from './lib/suggestions';
 import { exportEditingNotes, exportMarkerCsv, formatTime, normalizeSession, toTimelineItems } from './lib/timeline';
 
 const fallbackSession: MineMarkerExport = {
@@ -321,7 +321,7 @@ export function App() {
   }
 
   function jumpToSuggestion(suggestion: CreatorSuggestion) {
-    const sourceItem = timelineItems.find((item) => suggestion.sourceKeys.includes(item.key));
+    const sourceItem = suggestionSourceItem(suggestion, timelineItems);
     if (sourceItem) {
       jumpTo(sourceItem);
       return;

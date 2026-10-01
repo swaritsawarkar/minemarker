@@ -46,6 +46,11 @@ export function buildCreatorSuggestions(items: TimelineItem[], durationSeconds: 
   return suggestions.sort((a, b) => a.startSeconds - b.startSeconds || priorityRank(a.priority) - priorityRank(b.priority));
 }
 
+export function suggestionSourceItem(suggestion: CreatorSuggestion, items: TimelineItem[]): TimelineItem | undefined {
+  if (suggestion.kind === 'boring_gap') return undefined;
+  return items.find((item) => suggestion.sourceKeys.includes(item.key));
+}
+
 export function exportSuggestionNotes(session: MineMarkerExport, suggestions: CreatorSuggestion[]): string {
   const lines = [
     `MineMarker Creator Suggestions: ${session.session.name}`,
