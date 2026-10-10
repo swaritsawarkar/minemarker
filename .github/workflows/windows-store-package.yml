@@ -45,7 +45,7 @@ jobs:
           cache-dependency-path: timeline-viewer/package-lock.json
       - name: Build Fabric mod
         working-directory: minemarker-mod
-        run: .\gradlew.bat clean build
+        run: gradle clean build
       - name: Install desktop dependencies
         working-directory: timeline-viewer
         run: npm ci
