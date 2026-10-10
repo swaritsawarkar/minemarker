@@ -200,6 +200,43 @@ export function App() {
     }
   }
 
+  async function chooseMinecraftDirectory() {
+    if (!window.mineMarkerDesktop) return;
+    setInstallState((current) => ({ ...current, loading: true, error: null }));
+    try {
+      const result = await window.mineMarkerDesktop.chooseMinecraftDirectory();
+      setInstallState({
+        status: result.status,
+        loading: false,
+        message: result.canceled ? 'Minecraft folder unchanged.' : 'Minecraft folder updated.',
+        error: null
+      });
+    } catch (reason) {
+      setInstallState((current) => ({
+        ...current,
+        loading: false,
+        message: 'Could not update the Minecraft folder.',
+        error: reason instanceof Error ? reason.message : 'Unknown folder error.'
+      }));
+    }
+  }
+
+  async function resetMinecraftDirectory() {
+    if (!window.mineMarkerDesktop) return;
+    setInstallState((current) => ({ ...current, loading: true, error: null }));
+    try {
+      const status = await window.mineMarkerDesktop.resetMinecraftDirectory();
+      setInstallState({ status, loading: false, message: 'Using the default Minecraft folder.', error: null });
+    } catch (reason) {
+      setInstallState((current) => ({
+        ...current,
+        loading: false,
+        message: 'Could not reset the Minecraft folder.',
+        error: reason instanceof Error ? reason.message : 'Unknown folder error.'
+      }));
+    }
+  }
+
   async function installMod() {
     if (!window.mineMarkerDesktop) {
       setInstallState((current) => ({
@@ -369,6 +406,22 @@ export function App() {
             {installState.error ? <AlertTriangle size={15} /> : <CheckCircle2 size={15} />}
             <span>{installState.error || installState.message}</span>
           </div>
+          {window.mineMarkerDesktop && (
+            <>
+              <div className="file-meta">
+                <strong>Minecraft folder</strong>
+                <span>{installState.status?.minecraftDirectory || 'Checking...'}</span>
+              </div>
+              <button className="text-action" disabled={installState.loading} onClick={chooseMinecraftDirectory}>
+                <FolderOpen size={15} />
+                Choose Minecraft folder
+              </button>
+              <button className="text-action" disabled={installState.loading} onClick={resetMinecraftDirectory}>
+                <RefreshCw size={15} />
+                Use default folder
+              </button>
+            </>
+          )}
           {installState.status?.modsDirectory && (
             <button className="text-action" onClick={openModsFolder}>
               <FolderOpen size={15} />
@@ -376,7 +429,7 @@ export function App() {
             </button>
           )}
           <ol className="sync-steps">
-            <li>Click install once. The app copies the mod into `.minecraft/mods`.</li>
+            <li>Choose your Minecraft folder if needed, then install the mod.</li>
             <li>Run `/minemarker start`, add markers, then `/minemarker stop`.</li>
             <li>Load the exported `session.json` and your OBS video here.</li>
           </ol>
