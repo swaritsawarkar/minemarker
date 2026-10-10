@@ -11,11 +11,11 @@ module.exports = {
   productName: 'MineMarker',
   win: {
     ...pkg.build.win,
-    target: [{ target: 'msix', arch: ['x64'] }],
+    target: [{ target: 'appx', arch: ['x64'] }],
     signAndEditExecutable: false,
     artifactName: 'MineMarker-${version}-Store-${arch}.${ext}'
   },
-  msix: {
+  appx: {
     identityName: required('STORE_IDENTITY_NAME'),
     publisher: required('STORE_PUBLISHER'),
     publisherDisplayName: required('STORE_PUBLISHER_DISPLAY_NAME'),
