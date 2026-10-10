@@ -1,0 +1,67 @@
+name: Build Microsoft Store package
+
+on:
+  pull_request:
+    paths:
+      - 'minemarker-mod/**'
+      - 'timeline-viewer/**'
+      - '.github/workflows/windows-store-package.yml'
+  workflow_dispatch:
+    inputs:
+      identity_name:
+        description: Partner Center Package/Identity/Name
+        required: true
+        type: string
+      publisher:
+        description: Partner Center Package/Identity/Publisher
+        required: true
+        type: string
+      publisher_display_name:
+        description: Partner Center PublisherDisplayName
+        required: true
+        default: MineMarker
+        type: string
+
+permissions:
+  contents: read
+
+jobs:
+  build-store-package:
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v5
+        with:
+          distribution: temurin
+          java-version: '25'
+      - uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.5.0'
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+          cache: npm
+          cache-dependency-path: timeline-viewer/package-lock.json
+      - name: Build Fabric mod
+        working-directory: minemarker-mod
+        run: gradle clean build
+      - name: Install desktop dependencies
+        working-directory: timeline-viewer
+        run: npm ci
+      - name: Test timeline logic
+        working-directory: timeline-viewer
+        run: npm test
+      - name: Build Store AppX
+        working-directory: timeline-viewer
+        env:
+          STORE_IDENTITY_NAME: ${{ github.event_name == 'workflow_dispatch' && inputs.identity_name || 'MineMarker.Test' }}
+          STORE_PUBLISHER: ${{ github.event_name == 'workflow_dispatch' && inputs.publisher || 'CN=ms' }}
+          STORE_PUBLISHER_DISPLAY_NAME: ${{ github.event_name == 'workflow_dispatch' && inputs.publisher_display_name || 'MineMarker' }}
+        run: npm run desktop:store
+      - name: Upload Store package
+        uses: actions/upload-artifact@v4
+        with:
+          name: MineMarker-Store-AppX
+          path: timeline-viewer/desktop-dist/*.appx
+          if-no-files-found: error

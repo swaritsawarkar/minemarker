@@ -1,7 +1,7 @@
 {
   "name": "minemarker-timeline-viewer",
-  "version": "4.3.0",
-  "description": "Local MineMarker timeline viewer desktop app for Minecraft creator editing workflows.",
+  "version": "4.4.0",
+  "description": "MineMarker desktop app for installing the Fabric mod and turning Minecraft session markers into an editing timeline.",
   "author": "MineMarker",
   "private": true,
   "type": "module",
@@ -13,13 +13,15 @@
     "desktop:dev": "npm run build && npm run prepare:mod-bundle && electron electron/main.cjs",
     "desktop:build": "npm run build && npm run prepare:mod-bundle && electron-builder --win portable",
     "preview": "vite preview --host 127.0.0.1",
-    "test": "vitest run"
+    "test": "vitest run",
+    "desktop:store": "npm run build && npm run prepare:mod-bundle && electron-builder --config electron-builder.store.cjs --win appx"
   },
   "build": {
-    "appId": "com.minemarker.timelineviewer",
-    "productName": "MineMarker Timeline Viewer",
+    "appId": "com.minemarker.app",
+    "productName": "MineMarker",
     "directories": {
-      "output": "desktop-dist"
+      "output": "desktop-dist",
+      "buildResources": "build"
     },
     "files": [
       "dist/**/*",
@@ -42,10 +44,10 @@
           ]
         }
       ],
-      "artifactName": "MineMarker-Timeline-Viewer-${version}-Portable-${arch}.${ext}"
+      "artifactName": "MineMarker-${version}-Portable-${arch}.${ext}"
     },
     "portable": {
-      "artifactName": "MineMarker-Timeline-Viewer-${version}-Portable-${arch}.${ext}"
+      "artifactName": "MineMarker-${version}-Portable-${arch}.${ext}"
     }
   },
   "dependencies": {
