@@ -1,6 +1,11 @@
 name: Build Microsoft Store package
 
 on:
+  pull_request:
+    paths:
+      - 'minemarker-mod/**'
+      - 'timeline-viewer/**'
+      - '.github/workflows/windows-store-package.yml'
   workflow_dispatch:
     inputs:
       identity_name:
@@ -46,6 +51,7 @@ jobs:
         working-directory: timeline-viewer
         run: npm test
       - name: Build Store MSIX
+        if: github.event_name == 'workflow_dispatch'
         working-directory: timeline-viewer
         env:
           STORE_IDENTITY_NAME: ${{ inputs.identity_name }}
@@ -53,6 +59,7 @@ jobs:
           STORE_PUBLISHER_DISPLAY_NAME: ${{ inputs.publisher_display_name }}
         run: npm run desktop:store
       - name: Upload Store package
+        if: github.event_name == 'workflow_dispatch'
         uses: actions/upload-artifact@v4
         with:
           name: MineMarker-Store-MSIX
